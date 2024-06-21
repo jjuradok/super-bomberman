@@ -29,25 +29,9 @@ bool fuera_de_la_pantalla(Disparo &d)
 
 void Partida::update(Game &j)
 {
-	m_tanque_p1.update(); // Llamado a update()
-	if (m_tanque_p1.debeDisparar())
+	m_tanque_p1.update();
+	if (m_tanque_p1.canShoot())
 		m_disparos.push_back(m_tanque_p1.generarDisparo());
-	m_tanque_p2.update(); // Llamado a update()
-	if (m_tanque_p2.debeDisparar())
-		m_disparos.push_back(m_tanque_p2.generarDisparo());
-	for (Disparo &d : m_disparos)
-		d.update();
-	for (Disparo &d : m_disparos)
-	{
-		if (colisiona(d, m_tanque_p1))
-		{
-			j.changeScene(new Ganador(false));
-		}
-		if (colisiona(d, m_tanque_p2))
-		{
-			j.changeScene(new Ganador(true));
-		}
-	}
 	auto it = remove_if(m_disparos.begin(), m_disparos.end(), fuera_de_la_pantalla);
 	m_disparos.erase(it, m_disparos.end());
 }
@@ -56,7 +40,6 @@ void Partida::draw(RenderWindow &w)
 {
 	w.clear(Color(220, 220, 180, 255));
 	m_tanque_p1.draw(w);
-	m_tanque_p2.draw(w);
 	for (Disparo &d : m_disparos)
 		d.draw(w);
 }

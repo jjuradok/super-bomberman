@@ -1,26 +1,25 @@
 #ifndef TANQUE_H
 #define TANQUE_H
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Window/Keyboard.hpp>
+
+#include <SFML/Graphics.hpp>
 #include "Disparo.h"
-using namespace sf;
 
 class Tanque
 {
-	Texture m_tex;
-	Sprite m_spr;
-	Clock m_clock;
-	Keyboard::Key m_acel, m_fren, m_izq, m_der, m_disp;
-
+	bool isPrimary;
 public:
-	Tanque(bool player_one);
+	Tanque(bool isPrimary);
 	void update();
-	void draw(RenderWindow &w);
-	bool debeDisparar();
+	void draw(sf::RenderWindow &w);
+	bool canShoot();
 	Disparo generarDisparo();
-	Vector2f verPosicion();
+	sf::Vector2f verPosicion();
+
+private:
+	sf::Texture m_tex;
+	sf::Sprite m_spr;
+	sf::Keyboard::Key m_right, m_left, m_up, m_down, m_shoot;
+	sf::Clock m_clock;
 };
 
 #endif
