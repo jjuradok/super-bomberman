@@ -1,3 +1,10 @@
 {
-    "cSpell.words": ["SFML"]
+    "cSpell.words": [
+        "SFML"
+    ],
+    "files.associations": {
+        "iostream": "cpp",
+        "string": "cpp",
+        "new": "cpp"
+    }
 }
