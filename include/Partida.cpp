@@ -1,11 +1,16 @@
-#include "Partida.h"
-#include <cmath>
 #include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <SFML/Graphics.hpp>
+#include "Partida.h"
 #include "Game.h"
 #include "Ganador.h"
+#include "Level.h"
+#include "config/ResourcesLocation.h"
+
 using namespace std;
 
-Partida::Partida() : m_tanque_p1(true), m_tanque_p2(false)
+Partida::Partida() : m_tanque_p1(true), m_tanque_p2(false), level(TEST_LEVEL_LAYOUT)
 {
 }
 
@@ -40,6 +45,7 @@ void Partida::draw(RenderWindow &w)
 {
 	w.clear(Color(220, 220, 180, 255));
 	m_tanque_p1.draw(w);
+	level.draw(w);
 	for (Disparo &d : m_disparos)
 		d.draw(w);
 }
