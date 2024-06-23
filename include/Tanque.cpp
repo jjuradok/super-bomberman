@@ -2,15 +2,16 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <iostream>
-#include "Config.h"
+#include "config/Config.h"
+#include "config/ResourcesLocation.h"
+using namespace std;
 
 using namespace std;
 using namespace sf;
 
 Tanque::Tanque(bool isPrimary)
 {
-	
-	if (!m_tex.loadFromFile("assets/textures/player.png"))
+	if (!m_tex.loadFromFile(PLAYER_TEXTURE))
 	{
 		cerr << "Error: No se pudo cargar el sprite sheet 'Sega Genesis 32X - Mega Bomberman - Bomberman.png'" << endl;
 		return;
@@ -44,26 +45,26 @@ Tanque::Tanque(bool isPrimary)
 		m_down = Keyboard::Down;
 		m_shoot = Keyboard::Space;
 	}
-	m_spr.setOrigin(spriteWidth / 2, spriteHeight / 2); 
+	m_spr.setOrigin(spriteWidth / 2, spriteHeight / 2);
 }
 
 void Tanque::update()
 {
 	if (Keyboard::isKeyPressed(m_right))
 	{
-		m_spr.move(3, 0);
+		m_spr.move(PLAYER_SPEED, 0);
 	}
 	if (Keyboard::isKeyPressed(m_left))
 	{
-		m_spr.move(-3, 0);
+		m_spr.move(-PLAYER_SPEED, 0);
 	}
 	if (Keyboard::isKeyPressed(m_up))
 	{
-		m_spr.move(0, -3);
+		m_spr.move(0, -PLAYER_SPEED);
 	}
 	if (Keyboard::isKeyPressed(m_down))
 	{
-		m_spr.move(0, 3);
+		m_spr.move(0, PLAYER_SPEED);
 	}
 }
 
