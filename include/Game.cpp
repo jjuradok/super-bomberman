@@ -1,8 +1,9 @@
 #include "Game.h"
 #include <SFML/Window/Event.hpp>
-#include "Config.h"
+#include "config/Config.h"
 #include "Settings.h"
 #include <iostream>
+#include <Level.h>
 
 using namespace sf;
 using namespace std;
