@@ -3,23 +3,29 @@
 
 #include <SFML/Graphics.hpp>
 #include "Disparo.h"
+#include "Level.h"
+
+using namespace sf;
 
 class Tanque
 {
 	bool isPrimary;
+
 public:
 	Tanque(bool isPrimary);
-	void update();
-	void draw(sf::RenderWindow &w);
+	void update(Level &level);
+	void draw(RenderWindow &w);
 	bool canShoot();
 	Disparo generarDisparo();
-	sf::Vector2f verPosicion();
+	Vector2f verPosicion();
+	bool checkCollision(Level &level, Vector2f movement);
+	FloatRect getCollisionBounds();
 
 private:
-	sf::Texture m_tex;
-	sf::Sprite m_spr;
-	sf::Keyboard::Key m_right, m_left, m_up, m_down, m_shoot;
-	sf::Clock m_clock;
+	Texture m_tex;
+	Sprite m_spr;
+	Keyboard::Key m_right, m_left, m_up, m_down, m_shoot;
+	Clock m_clock;
 };
 
 #endif
