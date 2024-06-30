@@ -34,7 +34,7 @@ bool fuera_de_la_pantalla(Disparo &d)
 
 void Partida::update(Game &j)
 {
-	m_tanque_p1.update();
+	m_tanque_p1.update(level);
 	if (m_tanque_p1.canShoot())
 		m_disparos.push_back(m_tanque_p1.generarDisparo());
 	auto it = remove_if(m_disparos.begin(), m_disparos.end(), fuera_de_la_pantalla);
@@ -44,8 +44,8 @@ void Partida::update(Game &j)
 void Partida::draw(RenderWindow &w)
 {
 	w.clear(Color(220, 220, 180, 255));
-	m_tanque_p1.draw(w);
 	level.draw(w);
+	m_tanque_p1.draw(w);
 	for (Disparo &d : m_disparos)
 		d.draw(w);
 }
