@@ -1,11 +1,11 @@
-#include <SFML/Graphics.hpp>
-
+#include "Level.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include "Level.h"
 #include "Box.h"
+#include "config/Config.h"
+
 using namespace std;
 
 void Level::loadMatrix()
@@ -26,45 +26,64 @@ void Level::loadMatrix()
 
     while (iss >> number)
     {
-      row.push_back(number);  
+      row.push_back(number);
     }
     matrix.push_back(row);
   }
   file.close();
+
+  int rows = matrix.size();
+  int columns = matrix[0].size();
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < columns; j++)
+    {
+      if (matrix[i][j] == 1 || matrix[i][j] == 2)
+      {
+        bool isDestructible = matrix[i][j] == 2;
+        auto box = make_shared<Box>(isDestructible);
+        Vector2f boxPosition(j * 48, i * 48);
+        box->setPosition(boxPosition);
+        boxes.push_back(box);
+      }
+    }
+  }
 }
 
-vector<vector<int>> Level::getMatrix()
+vector<vector<int>> Level::getMatrix() const
 {
   return matrix;
 }
 
-Level::Level(string filename) {
-  fileName = filename;
+int Level::getRows() const
+{
+  return matrix.size();
+}
+
+int Level::getColumns() const
+{
+  return matrix[0].size();
+}
+
+Level::Level(string filename) : fileName(filename)
+{
   loadMatrix();
 }
 
 void Level::draw(sf::RenderWindow &w)
 {
-  int rows = matrix.size();
-  int columns = matrix[0].size();
-    for (int i = 0; i < rows; i++)
-    {
-      Box testBox(true);
+  for (auto &box : boxes)
+  {
+    box->draw(w);
+  }
+}
 
-      for (int j = 0; j < columns; j++)
-      {
-        if (matrix[i][j] == 1)
-        {
-          Box box(false);
-          box.setPosition(j * 48, i * 48);
-          box.draw(w);
-        }
-        else if (matrix[i][j] == 2)
-        {
-          Box box(true);
-          box.setPosition(j * 48, i * 48);
-          box.draw(w);
-        }
-      }
-    }
+int Level::getTile(int x, int y) const
+{
+  return matrix[y][x];
+}
+
+vector<shared_ptr<Box>> Level::getLevelBoxes()
+{
+  return boxes;
 }
