@@ -1,7 +1,12 @@
+#ifndef BOX_H
+#define BOX_H
+
 #include <SFML/Graphics.hpp>
 
+using namespace sf;
+
 class Box {
-  int xPos, yPos;
+  Vector2f position;
   sf::Texture m_tex;
   sf::Sprite m_spr;
   bool isDestructible;
@@ -10,5 +15,9 @@ class Box {
   bool getIsDestructible();
   void update();
   void draw(sf::RenderWindow &w);
-  void setPosition(int x, int y);
+  void setPosition(Vector2f pos);
+  Vector2f getPosition();
+  FloatRect getGlobalBounds();
 };
+
+#endif 

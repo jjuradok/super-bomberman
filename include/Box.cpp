@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Box.h"
 #include "config/ResourcesLocation.h"
+#include "config/Config.h"
+#include <iostream>
+
 using namespace std;
 
 Box::Box(bool isDestructible): isDestructible(isDestructible) {
@@ -11,16 +14,24 @@ Box::Box(bool isDestructible): isDestructible(isDestructible) {
 
 void Box::draw(sf::RenderWindow &w)
 {
-  m_spr.setScale(3.0f, 3.0f);
-  setPosition(xPos, yPos);
+  m_spr.setScale(SCALE_FACTOR, SCALE_FACTOR);
+  setPosition(position);
   w.draw(m_spr);  
 }
 
-void Box::setPosition(int x, int y)
+void Box::setPosition(Vector2f pos)
 {
-  xPos = x;
-  yPos = y;
-  m_spr.setPosition(xPos, yPos);
+  position = pos;
+  m_spr.setPosition(pos);
+}
+
+Vector2f Box::getPosition()
+{
+  return position;
+}
+
+FloatRect Box::getGlobalBounds() {
+  return m_spr.getGlobalBounds();
 }
 
 bool Box::getIsDestructible()
