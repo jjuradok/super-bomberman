@@ -4,67 +4,112 @@
 #include <iostream>
 #include "config/Config.h"
 #include "config/ResourcesLocation.h"
-using namespace std;
+#include "config/Constants.h"
 
 using namespace std;
 using namespace sf;
+
+FloatRect Tanque::getCollisionBounds()
+{
+	cout << "Posicion: " << m_spr.getPosition().x << ", " << m_spr.getPosition().y << endl;
+	// TODO: sacar el 16 hardcodeado
+	float collisionY = m_spr.getPosition().y + 16 * PLAYER_SCALE_FACTOR - 16 * PLAYER_SCALE_FACTOR / 2;
+	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, 16 * PLAYER_SCALE_FACTOR, 16 * PLAYER_SCALE_FACTOR);
+	return collisionRect;
+}
+
+bool Tanque::checkCollision(Level &level, Vector2f movement)
+{
+	FloatRect futureBounds = this->getCollisionBounds();
+	futureBounds.left += movement.x;
+	futureBounds.top += movement.y;
+
+	vector<shared_ptr<Box>> levelBoxes = level.getLevelBoxes();
+	for (auto &box : levelBoxes)
+	{
+		if (box->getGlobalBounds().intersects(futureBounds))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 Tanque::Tanque(bool isPrimary)
 {
 	if (!m_tex.loadFromFile(PLAYER_TEXTURE))
 	{
-		cerr << "Error: No se pudo cargar el sprite sheet 'Sega Genesis 32X - Mega Bomberman - Bomberman.png'" << endl;
+		cerr << "Error cargando la textura del personaje" << endl;
 		return;
 	}
 
+	int textureWidth = 15;
+	int textureHeight = 23;
 	int spriteWidth = 16;
-	int spriteHeight = 23;
-	IntRect spriteRect;
-	spriteRect = IntRect(72, 46, spriteWidth, spriteHeight); 
+	int spriteHeight = 16;
 
 	m_spr.setTexture(m_tex);
-	m_spr.setTextureRect(spriteRect); 
-	
-	float scaleFactor = 3.0f;					
-	m_spr.setScale(scaleFactor, scaleFactor);
-	if (isPrimary) {
-		m_spr.setPosition(675, 430);
-	} else {
+	m_spr.setOrigin(0,0);
+
+	m_spr.setScale(PLAYER_SCALE_FACTOR, PLAYER_SCALE_FACTOR);
+	if (isPrimary)
+	{
+		m_spr.setPosition(0, 0);
+	}
+	else
+	{
 		m_spr.setPosition(125, 430);
 	}
-	if (isPrimary) {
+	if (isPrimary)
+	{
 		m_right = Keyboard::D;
 		m_left = Keyboard::A;
 		m_up = Keyboard::W;
 		m_down = Keyboard::S;
 		m_shoot = Keyboard::Tab;
-	} else {
+	}
+	else
+	{
 		m_right = Keyboard::Right;
 		m_left = Keyboard::Left;
 		m_up = Keyboard::Up;
 		m_down = Keyboard::Down;
 		m_shoot = Keyboard::Space;
 	}
-	m_spr.setOrigin(spriteWidth / 2, spriteHeight / 2);
 }
 
-void Tanque::update()
+void Tanque::update(Level &level)
 {
+	Vector2f movement(0.f, 0.f);
+
 	if (Keyboard::isKeyPressed(m_right))
 	{
-		m_spr.move(PLAYER_SPEED, 0);
+		movement.x += PLAYER_SPEED;
+		if (!checkCollision(level, movement))
+			m_spr.move(movement.x, 0);
+			movement.x = 0;
 	}
 	if (Keyboard::isKeyPressed(m_left))
 	{
-		m_spr.move(-PLAYER_SPEED, 0);
+		movement.x -= PLAYER_SPEED;
+		if (!checkCollision(level, movement))
+			m_spr.move(movement.x, 0);
+			movement.x = 0;
 	}
 	if (Keyboard::isKeyPressed(m_up))
 	{
-		m_spr.move(0, -PLAYER_SPEED);
+		movement.y -= PLAYER_SPEED;
+		if (!checkCollision(level, movement))
+			m_spr.move(0, movement.y);
+			movement.y = 0;
 	}
 	if (Keyboard::isKeyPressed(m_down))
 	{
-		m_spr.move(0, PLAYER_SPEED);
+		movement.y += PLAYER_SPEED;
+		if (!checkCollision(level, movement))
+			m_spr.move(0, movement.y);
+			movement.y = 0;
+
 	}
 }
 
