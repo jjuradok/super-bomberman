@@ -5,52 +5,13 @@
 #include <sstream>
 #include "Box.h"
 #include "config/Config.h"
+#include "config/Constants.h"
+#include "utils/Vector.h"
+#include "ScreenPosition.h"
 
 using namespace std;
 
-void Level::loadMatrix()
-{
-  ifstream file(fileName);
-  if (!file.is_open())
-  {
-    cerr << "Error: No se pudo abrir el archivo " << fileName << endl;
-    return;
-  }
-
-  string line;
-  while (getline(file, line))
-  {
-    istringstream iss(line);
-    vector<int> row;
-    int number;
-
-    while (iss >> number)
-    {
-      row.push_back(number);
-    }
-    matrix.push_back(row);
-  }
-  file.close();
-
-  int rows = matrix.size();
-  int columns = matrix[0].size();
-  for (int i = 0; i < rows; i++)
-  {
-    for (int j = 0; j < columns; j++)
-    {
-      if (matrix[i][j] == 1 || matrix[i][j] == 2)
-      {
-        bool isDestructible = matrix[i][j] == 2;
-        auto box = make_shared<Box>(isDestructible);
-        Vector2f boxPosition(j * 48, i * 48);
-        box->setPosition(boxPosition);
-        boxes.push_back(box);
-      }
-    }
-  }
-}
-
-vector<vector<int>> Level::getMatrix() const
+vector<vector<char>> Level::getMatrix() const
 {
   return matrix;
 }
@@ -65,10 +26,29 @@ int Level::getColumns() const
   return matrix[0].size();
 }
 
-Level::Level(string filename) : fileName(filename)
+Level::Level(vector<vector<char>> matrix) : matrix(matrix)
 {
-  loadMatrix();
+  int rows = matrix.size();
+  int columns = matrix[0].size();
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < columns; j++)
+    {
+      if (includes(COLLISION_TILES, matrix[i][j]))
+      {
+        bool isDestructible = matrix[i][j] == DESTRUCTIBLE;
+        int boxSize = TILE_SIZE * SCALE_FACTOR;
+        Vector2f levelSize(columns * boxSize, rows * boxSize);
+        Vector2f boxPosition(j * boxSize, i * boxSize);
+        Vector2f pos = getPositionCenteredIntoLevel(boxPosition, levelSize, Vector2f(boxSize, boxSize));
+        auto box = make_shared<Box>(isDestructible, pos);
+        boxes.push_back(box);
+      }
+    }
+  }
 }
+
+Level::Level() {}
 
 void Level::draw(sf::RenderWindow &w)
 {
@@ -81,6 +61,27 @@ void Level::draw(sf::RenderWindow &w)
 int Level::getTile(int x, int y) const
 {
   return matrix[y][x];
+}
+
+MatrixPosition Level::findPosition(char tile) 
+{
+  for (int i = 0; i < matrix.size(); i++)
+  {
+    for (int j = 0; j < matrix[i].size(); j++)
+    {
+      if (matrix[i][j] == tile)
+      {
+        return MatrixPosition({i, j});
+      }
+    }
+  }
+}
+
+Vector2f Level::getDimensions() {
+  int width = this->getColumns() * TILE_SIZE * SCALE_FACTOR;
+  int height = this->getRows() * TILE_SIZE * SCALE_FACTOR;
+  
+  return Vector2f(width, height);
 }
 
 vector<shared_ptr<Box>> Level::getLevelBoxes()
