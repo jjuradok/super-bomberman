@@ -1,4 +1,4 @@
-#include "Tanque.h"
+#include "Player.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <iostream>
@@ -9,16 +9,14 @@
 using namespace std;
 using namespace sf;
 
-FloatRect Tanque::getCollisionBounds()
+FloatRect Player::getCollisionBounds()
 {
-	cout << "Posicion: " << m_spr.getPosition().x << ", " << m_spr.getPosition().y << endl;
-	// TODO: sacar el 16 hardcodeado
-	float collisionY = m_spr.getPosition().y + 16 * PLAYER_SCALE_FACTOR - 16 * PLAYER_SCALE_FACTOR / 2;
-	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, 16 * PLAYER_SCALE_FACTOR, 16 * PLAYER_SCALE_FACTOR);
+	float collisionY = m_spr.getPosition().y + TILE_SIZE * PLAYER_SCALE_FACTOR - TILE_SIZE * PLAYER_SCALE_FACTOR / 2;
+	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, TILE_SIZE * PLAYER_SCALE_FACTOR, TILE_SIZE * PLAYER_SCALE_FACTOR);
 	return collisionRect;
 }
 
-bool Tanque::checkCollision(Level &level, Vector2f movement)
+bool Player::checkCollision(Level &level, Vector2f movement)
 {
 	FloatRect futureBounds = this->getCollisionBounds();
 	futureBounds.left += movement.x;
@@ -35,31 +33,22 @@ bool Tanque::checkCollision(Level &level, Vector2f movement)
 	return false;
 }
 
-Tanque::Tanque(bool isPrimary)
+Player::Player(bool isPrimary, Vector2f position)
 {
-	if (!m_tex.loadFromFile(PLAYER_TEXTURE))
-	{
-		cerr << "Error cargando la textura del personaje" << endl;
-		return;
-	}
+	string textureSrc = isPrimary ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
+	m_tex.loadFromFile(textureSrc);
+	m_spr.setTexture(m_tex);
 
-	int textureWidth = 15;
-	int textureHeight = 23;
-	int spriteWidth = 16;
-	int spriteHeight = 16;
+	int textureWidth = PLAYER_TEXTURE_WIDTH;
+	int textureHeight = PLAYER_TEXTURE_HEIGHT;
+	int spriteWidth = TILE_SIZE;
+	int spriteHeight = TILE_SIZE;
 
 	m_spr.setTexture(m_tex);
 	m_spr.setOrigin(0,0);
 
 	m_spr.setScale(PLAYER_SCALE_FACTOR, PLAYER_SCALE_FACTOR);
-	if (isPrimary)
-	{
-		m_spr.setPosition(0, 0);
-	}
-	else
-	{
-		m_spr.setPosition(125, 430);
-	}
+	m_spr.setPosition(position);
 	if (isPrimary)
 	{
 		m_right = Keyboard::D;
@@ -78,7 +67,7 @@ Tanque::Tanque(bool isPrimary)
 	}
 }
 
-void Tanque::update(Level &level)
+void Player::update(Level &level)
 {
 	Vector2f movement(0.f, 0.f);
 
@@ -113,12 +102,12 @@ void Tanque::update(Level &level)
 	}
 }
 
-void Tanque::draw(RenderWindow &w)
+void Player::draw(RenderWindow &w)
 {
 	w.draw(m_spr);
 }
 
-bool Tanque::canShoot()
+bool Player::canShoot()
 {
 	if (m_clock.getElapsedTime().asMilliseconds() < 500)
 		return false;
@@ -128,7 +117,7 @@ bool Tanque::canShoot()
 	return true;
 }
 
-Disparo Tanque::generarDisparo()
+Disparo Player::generarDisparo()
 {
 	Vector2f p = m_spr.getPosition();
 	float ang = m_spr.getRotation() * M_PI / 180;
@@ -136,7 +125,19 @@ Disparo Tanque::generarDisparo()
 	return Disparo(p + 40.f * d, d);
 }
 
-Vector2f Tanque::verPosicion()
+Vector2f Player::getDimensions() {
+	int width = TILE_SIZE * PLAYER_SCALE_FACTOR;
+	int height = TILE_SIZE * PLAYER_SCALE_FACTOR;
+	
+	return Vector2f(width, height);
+}
+
+Vector2f Player::verPosicion()
 {
 	return m_spr.getPosition();
+}
+
+void Player::changePosition(Vector2f newPosition)
+{
+	m_spr.setPosition(newPosition);
 }

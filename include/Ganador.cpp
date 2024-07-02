@@ -1,5 +1,5 @@
 #include "Ganador.h"
-#include "Partida.h"
+#include "Match.h"
 #include "Game.h"
 
 Ganador::Ganador(bool player_one)
@@ -24,7 +24,7 @@ Ganador::Ganador(bool player_one)
 void Ganador::update(Game &j)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Return))
-		j.changeScene(new Partida);
+		j.changeScene(new Match);
 }
 
 void Ganador::draw(RenderWindow &w)
