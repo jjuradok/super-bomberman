@@ -2,9 +2,16 @@
 #define CONSTANTS_H
 
 #include <string>
-#include <array>
+#include <vector>
 using namespace std;
 
-const array<int, 2> COLLISION_TILES = {1, 2};
+enum CollisionTiles {
+  DESTRUCTIBLE = 'X',
+  INDESTRUCTIBLE = 'O'
+};
+const vector<char> COLLISION_TILES = {DESTRUCTIBLE, INDESTRUCTIBLE};
+
+const char PLAYER_ONE_ID = '1';
+const char PLAYER_TWO_ID = '2';
 
 #endif
