@@ -117,12 +117,12 @@ bool Player::canShoot()
 	return true;
 }
 
-Disparo Player::generarDisparo()
+Bomb Player::generarDisparo()
 {
 	Vector2f p = m_spr.getPosition();
 	float ang = m_spr.getRotation() * M_PI / 180;
 	Vector2f d(cos(ang), sin(ang));
-	return Disparo(p + 40.f * d, d);
+	return Bomb(p + 40.f * d, d);
 }
 
 Vector2f Player::getDimensions() {

@@ -32,7 +32,7 @@ Match::Match() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(
 	player_2.changePosition(player2PositionPixels);
 }
 
-bool colisiona(Disparo &d, Player &t)
+bool colisiona(Bomb &d, Player &t)
 {
 	Vector2f pd = d.verPosicion();
 	Vector2f pt = t.verPosicion();
@@ -40,7 +40,7 @@ bool colisiona(Disparo &d, Player &t)
 	return sqrt(v.x * v.x + v.y * v.y) < 25;
 }
 
-bool fuera_de_la_pantalla(Disparo &d)
+bool fuera_de_la_pantalla(Bomb &d)
 {
 	Vector2f p = d.verPosicion();
 	if (p.x < 0 or p.x > 800)
@@ -68,7 +68,7 @@ void Match::draw(RenderWindow &w)
 	level.draw(w);
 	player_1.draw(w);
 	player_2.draw(w);
-	for (Disparo &d : m_disparos)
+	for (Bomb &d : m_disparos)
 		d.draw(w);
 }
 

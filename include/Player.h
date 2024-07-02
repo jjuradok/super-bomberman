@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
-#include "Disparo.h"
+#include "Bomb.h"
 #include "Level.h"
 
 using namespace sf;
@@ -16,7 +16,7 @@ public:
 	void update(Level &level);
 	void draw(RenderWindow &w);
 	bool canShoot();
-	Disparo generarDisparo();
+	Bomb generarDisparo();
 	Vector2f verPosicion();
 	bool checkCollision(Level &level, Vector2f movement);
 	FloatRect getCollisionBounds();

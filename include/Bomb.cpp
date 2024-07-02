@@ -1,6 +1,6 @@
-#include "Disparo.h"
+#include "Bomb.h"
 
-Disparo::Disparo(Vector2f pos, Vector2f dir) {
+Bomb::Bomb(Vector2f pos, Vector2f dir) {
 	m_circ.setPosition(pos);
 	m_circ.setRadius(2);
 	m_circ.setOrigin(2,2);
@@ -8,15 +8,15 @@ Disparo::Disparo(Vector2f pos, Vector2f dir) {
 	m_vel = dir*3.f;
 }
 
-void Disparo::update ( ) {
+void Bomb::update ( ) {
 	m_circ.move(m_vel);
 }
 
-void Disparo::draw(RenderWindow &w) {
+void Bomb::draw(RenderWindow &w) {
 	w.draw(m_circ);
 }
 
-Vector2f Disparo::verPosicion ( ) {
+Vector2f Bomb::verPosicion ( ) {
 	return m_circ.getPosition();
 }
 
