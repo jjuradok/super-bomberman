@@ -1,6 +1,5 @@
 #include "Game.h"
 #include <SFML/Window/Event.hpp>
-#include "config/Config.h"
 #include "Settings.h"
 #include <iostream>
 #include <Level.h>
@@ -8,8 +7,7 @@
 using namespace sf;
 using namespace std;
 
-std::string filename = SETTINGS_FILE;
-Settings settings(filename);
+Settings settings;
 
 Game::Game(Scene *e) : m_win(VideoMode(settings.getScreenWidth(), settings.getScreenHeight()), "Test")
 {
