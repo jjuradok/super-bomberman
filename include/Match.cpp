@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <SFML/Graphics.hpp>
-#include "Partida.h"
+#include "Match.h"
 #include "Game.h"
 #include "Ganador.h"
 #include "Level.h"
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-Partida::Partida() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100))
+Match::Match() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100))
 {
 	loadMatrix(TEST_LEVEL_LAYOUT);
 	level = Level(matrix);
@@ -50,7 +50,7 @@ bool fuera_de_la_pantalla(Disparo &d)
 	return false;
 }
 
-void Partida::update(Game &j)
+void Match::update(Game &j)
 {
 	player_1.update(level);
 	player_2.update(level);
@@ -62,7 +62,7 @@ void Partida::update(Game &j)
 m_disparos.erase(it, m_disparos.end());
 }
 
-void Partida::draw(RenderWindow &w)
+void Match::draw(RenderWindow &w)
 {
 	w.clear(Color(220, 220, 180, 255));
 	level.draw(w);
@@ -72,7 +72,7 @@ void Partida::draw(RenderWindow &w)
 		d.draw(w);
 }
 
-void Partida::loadMatrix(string fileName)
+void Match::loadMatrix(string fileName)
 {
 	ifstream file(fileName);
 	if (!file.is_open())
