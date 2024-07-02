@@ -17,7 +17,7 @@
 
 using namespace std;
 
-Partida::Partida() : m_tanque_p1(true, Vector2f(-100, -100)), m_tanque_p2(false, Vector2f(-100, -100))
+Partida::Partida() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100))
 {
 	loadMatrix(TEST_LEVEL_LAYOUT);
 	level = Level(matrix);
@@ -25,14 +25,14 @@ Partida::Partida() : m_tanque_p1(true, Vector2f(-100, -100)), m_tanque_p2(false,
 	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
 	float size = TILE_SIZE * SCALE_FACTOR;
 
-	Vector2f player1PositionPixels = getPositionCenteredIntoLevel(Vector2f(player1Position.j * size + 4, player1Position.i * size), level.getDimensions(), m_tanque_p1.getDimensions());
-	Vector2f player2PositionPixels = getPositionCenteredIntoLevel(Vector2f(player2Position.j * size + 4, player2Position.i * size), level.getDimensions(), m_tanque_p2.getDimensions());
+	Vector2f player1PositionPixels = getPositionCenteredIntoLevel(Vector2f(player1Position.j * size + 4, player1Position.i * size), level.getDimensions(), player_1.getDimensions());
+	Vector2f player2PositionPixels = getPositionCenteredIntoLevel(Vector2f(player2Position.j * size + 4, player2Position.i * size), level.getDimensions(), player_2.getDimensions());
 
-	m_tanque_p1.changePosition(player1PositionPixels);
-	m_tanque_p2.changePosition(player2PositionPixels);
+	player_1.changePosition(player1PositionPixels);
+	player_2.changePosition(player2PositionPixels);
 }
 
-bool colisiona(Disparo &d, Tanque &t)
+bool colisiona(Disparo &d, Player &t)
 {
 	Vector2f pd = d.verPosicion();
 	Vector2f pt = t.verPosicion();
@@ -52,12 +52,12 @@ bool fuera_de_la_pantalla(Disparo &d)
 
 void Partida::update(Game &j)
 {
-	m_tanque_p1.update(level);
-	m_tanque_p2.update(level);
-	if (m_tanque_p1.canShoot())
-		m_disparos.push_back(m_tanque_p1.generarDisparo());
-	if (m_tanque_p2.canShoot())
-		m_disparos.push_back(m_tanque_p2.generarDisparo());
+	player_1.update(level);
+	player_2.update(level);
+	if (player_1.canShoot())
+		m_disparos.push_back(player_1.generarDisparo());
+	if (player_2.canShoot())
+		m_disparos.push_back(player_2.generarDisparo());
 	auto it = remove_if(m_disparos.begin(), m_disparos.end(), fuera_de_la_pantalla);
 m_disparos.erase(it, m_disparos.end());
 }
@@ -66,8 +66,8 @@ void Partida::draw(RenderWindow &w)
 {
 	w.clear(Color(220, 220, 180, 255));
 	level.draw(w);
-	m_tanque_p1.draw(w);
-	m_tanque_p2.draw(w);
+	player_1.draw(w);
+	player_2.draw(w);
 	for (Disparo &d : m_disparos)
 		d.draw(w);
 }

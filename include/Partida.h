@@ -6,7 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Scene.h"
 #include "Level.h"
-#include "Tanque.h"
+#include "Player.h"
 
 using namespace sf;
 using namespace std;
@@ -14,8 +14,8 @@ using namespace std;
 class Partida : public Scene
 {
 	vector<vector<char>> matrix;
-	Tanque m_tanque_p1;
-	Tanque m_tanque_p2;
+	Player player_1;
+	Player player_2;
 	Level level;
 	vector<Disparo> m_disparos;
 	void loadMatrix(string fileName);

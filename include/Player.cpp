@@ -1,4 +1,4 @@
-#include "Tanque.h"
+#include "Player.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <iostream>
@@ -9,14 +9,14 @@
 using namespace std;
 using namespace sf;
 
-FloatRect Tanque::getCollisionBounds()
+FloatRect Player::getCollisionBounds()
 {
 	float collisionY = m_spr.getPosition().y + TILE_SIZE * PLAYER_SCALE_FACTOR - TILE_SIZE * PLAYER_SCALE_FACTOR / 2;
 	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, TILE_SIZE * PLAYER_SCALE_FACTOR, TILE_SIZE * PLAYER_SCALE_FACTOR);
 	return collisionRect;
 }
 
-bool Tanque::checkCollision(Level &level, Vector2f movement)
+bool Player::checkCollision(Level &level, Vector2f movement)
 {
 	FloatRect futureBounds = this->getCollisionBounds();
 	futureBounds.left += movement.x;
@@ -33,7 +33,7 @@ bool Tanque::checkCollision(Level &level, Vector2f movement)
 	return false;
 }
 
-Tanque::Tanque(bool isPrimary, Vector2f position)
+Player::Player(bool isPrimary, Vector2f position)
 {
 	string textureSrc = isPrimary ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
 	m_tex.loadFromFile(textureSrc);
@@ -67,7 +67,7 @@ Tanque::Tanque(bool isPrimary, Vector2f position)
 	}
 }
 
-void Tanque::update(Level &level)
+void Player::update(Level &level)
 {
 	Vector2f movement(0.f, 0.f);
 
@@ -102,12 +102,12 @@ void Tanque::update(Level &level)
 	}
 }
 
-void Tanque::draw(RenderWindow &w)
+void Player::draw(RenderWindow &w)
 {
 	w.draw(m_spr);
 }
 
-bool Tanque::canShoot()
+bool Player::canShoot()
 {
 	if (m_clock.getElapsedTime().asMilliseconds() < 500)
 		return false;
@@ -117,7 +117,7 @@ bool Tanque::canShoot()
 	return true;
 }
 
-Disparo Tanque::generarDisparo()
+Disparo Player::generarDisparo()
 {
 	Vector2f p = m_spr.getPosition();
 	float ang = m_spr.getRotation() * M_PI / 180;
@@ -125,19 +125,19 @@ Disparo Tanque::generarDisparo()
 	return Disparo(p + 40.f * d, d);
 }
 
-Vector2f Tanque::getDimensions() {
+Vector2f Player::getDimensions() {
 	int width = TILE_SIZE * PLAYER_SCALE_FACTOR;
 	int height = TILE_SIZE * PLAYER_SCALE_FACTOR;
 	
 	return Vector2f(width, height);
 }
 
-Vector2f Tanque::verPosicion()
+Vector2f Player::verPosicion()
 {
 	return m_spr.getPosition();
 }
 
-void Tanque::changePosition(Vector2f newPosition)
+void Player::changePosition(Vector2f newPosition)
 {
 	m_spr.setPosition(newPosition);
 }

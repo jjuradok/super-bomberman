@@ -1,5 +1,5 @@
-#ifndef TANQUE_H
-#define TANQUE_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <SFML/Graphics.hpp>
 #include "Disparo.h"
@@ -7,12 +7,12 @@
 
 using namespace sf;
 
-class Tanque
+class Player
 {
 	bool isPrimary;
 
 public:
-	Tanque(bool isPrimary, Vector2f position);
+	Player(bool isPrimary, Vector2f position);
 	void update(Level &level);
 	void draw(RenderWindow &w);
 	bool canShoot();
