@@ -12,7 +12,7 @@ class Tanque
 	bool isPrimary;
 
 public:
-	Tanque(bool isPrimary);
+	Tanque(bool isPrimary, Vector2f position);
 	void update(Level &level);
 	void draw(RenderWindow &w);
 	bool canShoot();
@@ -20,6 +20,8 @@ public:
 	Vector2f verPosicion();
 	bool checkCollision(Level &level, Vector2f movement);
 	FloatRect getCollisionBounds();
+	Vector2f getDimensions();
+	void changePosition(Vector2f newPosition);
 
 private:
 	Texture m_tex;
