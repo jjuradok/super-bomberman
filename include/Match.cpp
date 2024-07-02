@@ -44,18 +44,17 @@ void Match::update(Game &j)
 {
 	player_1.update(level);
 	player_2.update(level);
-	if (player_1.canShoot()) {
-		Bomb *shotBomb = player_1.shoot();
+	vector<Player *> playersToShoot;
+	if (player_1.canShoot())
+		playersToShoot.push_back(&player_1);
+	if (player_2.canShoot())
+		playersToShoot.push_back(&player_2);
+		
+	for (Player *player : playersToShoot) {
+		Bomb *shotBomb = player->shoot();
 		float size = TILE_SIZE * SCALE_FACTOR;
-		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(player_1.verPosicion(), level.getDimensions(), Vector2f(size, size));
-		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions(), Vector2f(size, size));
-		shotBomb->changePosition(bombAdjustedPosition);
-		bombs.push_back(shotBomb);
-	}
-	if (player_2.canShoot()) {
-		Bomb *shotBomb = player_2.shoot();
-		float size = TILE_SIZE * SCALE_FACTOR;
-		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(player_2.verPosicion(), level.getDimensions(), Vector2f(size, size));
+		Vector2f playerCenterPosition = Vector2f(player->verPosicion().x + size / 2, player->verPosicion().y + size / 2);
+		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(playerCenterPosition, level.getDimensions(), Vector2f(size, size));
 		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions(), Vector2f(size, size));
 		shotBomb->changePosition(bombAdjustedPosition);
 		bombs.push_back(shotBomb);
