@@ -11,13 +11,14 @@ class Box {
   sf::Sprite m_spr;
   bool isDestructible;
   public:
-  Box(bool isDestructible);
-  bool getIsDestructible();
-  void update();
-  void draw(sf::RenderWindow &w);
-  void setPosition(Vector2f pos);
-  Vector2f getPosition();
-  FloatRect getGlobalBounds();
+    Box(bool isDestructible, Vector2f position);
+    bool getIsDestructible();
+    void update();
+    void draw(sf::RenderWindow &w);
+    void setPosition(Vector2f pos);
+    Vector2f getPosition();
+    Vector2f getDimensions();
+    FloatRect getGlobalBounds();
 };
 
 #endif 
