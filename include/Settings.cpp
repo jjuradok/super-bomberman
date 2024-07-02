@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "config/Config.h"
 #include <fstream>
 #include <iostream>
 
@@ -17,6 +18,25 @@ Settings::Settings(std::string &filename) : filename(filename), screen_width(800
   {
     std::cerr << "Invalid width or height values in configuration file." << std::endl;
     screen_width = 800; 
+    screen_height = 600;
+  }
+}
+
+Settings::Settings() : filename(SETTINGS_FILE), screen_width(800), screen_height(600)
+{
+  std::ifstream file(filename);
+  if (!file.is_open())
+  {
+    std::cerr << "Failed to open configuration file: " << filename << std::endl;
+    return;
+  }
+  file >> screen_width >> screen_height;
+  file.close();
+
+  if (screen_width == 0 || screen_height == 0)
+  {
+    std::cerr << "Invalid width or height values in configuration file." << std::endl;
+    screen_width = 800;
     screen_height = 600;
   }
 }

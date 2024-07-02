@@ -3,13 +3,16 @@
 
 #include <string>
 
+using namespace std;
+
 class Settings
 {
-  std::string filename;
+  string filename;
   unsigned int screen_width;
   unsigned int screen_height;
 public:
-  Settings(std::string &filename);
+  Settings(string &filename);
+  Settings();
   unsigned int getScreenWidth() ;
   unsigned int getScreenHeight() ;
   void setScreenWidth(unsigned int width);
