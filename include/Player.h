@@ -10,13 +10,12 @@ using namespace sf;
 class Player
 {
 	bool isPrimary;
-
 public:
 	Player(bool isPrimary, Vector2f position);
 	void update(Level &level);
 	void draw(RenderWindow &w);
 	bool canShoot();
-	Bomb generarDisparo();
+	Bomb *shoot();
 	Vector2f verPosicion();
 	bool checkCollision(Level &level, Vector2f movement);
 	FloatRect getCollisionBounds();

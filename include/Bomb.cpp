@@ -1,22 +1,34 @@
 #include "Bomb.h"
+#include "config/Constants.h"
+#include "config/Config.h"
+#include "config/ResourcesLocation.h"
+#include <iostream>
 
-Bomb::Bomb(Vector2f pos, Vector2f dir) {
-	m_circ.setPosition(pos);
-	m_circ.setRadius(2);
-	m_circ.setOrigin(2,2);
-	m_circ.setFillColor(Color(0,0,0));
-	m_vel = dir*3.f;
+Bomb::Bomb(char playerOrigin) {
+	cout << "origin: " << playerOrigin << endl;
+	playerOrigin = playerOrigin;
+	
+	bool isPlayerOne = playerOrigin == PLAYER_ONE_ID;
+	string bombTexturePath = isPlayerOne ? BOMB_TEXTURE : BOMB_PLAYER_TWO_TEXTURE;
+	cout << "path" << bombTexturePath << endl;
+	
+	bombTexture.loadFromFile(bombTexturePath);
+	bombSprite.setTexture(bombTexture);
+	bombSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
 }
 
 void Bomb::update ( ) {
-	m_circ.move(m_vel);
+	// mostrar animacion
 }
 
 void Bomb::draw(RenderWindow &w) {
-	w.draw(m_circ);
+	w.draw(bombSprite);
 }
 
 Vector2f Bomb::verPosicion ( ) {
-	return m_circ.getPosition();
+	return bombSprite.getPosition();
 }
 
+void Bomb::changePosition(Vector2f newPosition) {
+	bombSprite.setPosition(newPosition);
+}

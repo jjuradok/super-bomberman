@@ -33,7 +33,7 @@ bool Player::checkCollision(Level &level, Vector2f movement)
 	return false;
 }
 
-Player::Player(bool isPrimary, Vector2f position)
+Player::Player(bool isPrimary, Vector2f position): isPrimary(isPrimary)
 {
 	string textureSrc = isPrimary ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
 	m_tex.loadFromFile(textureSrc);
@@ -44,7 +44,6 @@ Player::Player(bool isPrimary, Vector2f position)
 	int spriteWidth = TILE_SIZE;
 	int spriteHeight = TILE_SIZE;
 
-	m_spr.setTexture(m_tex);
 	m_spr.setOrigin(0,0);
 
 	m_spr.setScale(PLAYER_SCALE_FACTOR, PLAYER_SCALE_FACTOR);
@@ -55,7 +54,7 @@ Player::Player(bool isPrimary, Vector2f position)
 		m_left = Keyboard::A;
 		m_up = Keyboard::W;
 		m_down = Keyboard::S;
-		m_shoot = Keyboard::Tab;
+		m_shoot = Keyboard::F;
 	}
 	else
 	{
@@ -117,12 +116,11 @@ bool Player::canShoot()
 	return true;
 }
 
-Bomb Player::generarDisparo()
+Bomb *Player::shoot()
 {
-	Vector2f p = m_spr.getPosition();
-	float ang = m_spr.getRotation() * M_PI / 180;
-	Vector2f d(cos(ang), sin(ang));
-	return Bomb(p + 40.f * d, d);
+	char playerOrigin = isPrimary ? PLAYER_ONE_ID : PLAYER_TWO_ID;
+	Bomb bomb(playerOrigin);
+	return new Bomb(playerOrigin);
 }
 
 Vector2f Player::getDimensions() {

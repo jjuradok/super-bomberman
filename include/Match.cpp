@@ -40,26 +40,26 @@ bool colisiona(Bomb &d, Player &t)
 	return sqrt(v.x * v.x + v.y * v.y) < 25;
 }
 
-bool fuera_de_la_pantalla(Bomb &d)
-{
-	Vector2f p = d.verPosicion();
-	if (p.x < 0 or p.x > 800)
-		return true;
-	if (p.y < 0 or p.y > 600)
-		return true;
-	return false;
-}
-
 void Match::update(Game &j)
 {
 	player_1.update(level);
 	player_2.update(level);
-	if (player_1.canShoot())
-		m_disparos.push_back(player_1.generarDisparo());
-	if (player_2.canShoot())
-		m_disparos.push_back(player_2.generarDisparo());
-	auto it = remove_if(m_disparos.begin(), m_disparos.end(), fuera_de_la_pantalla);
-m_disparos.erase(it, m_disparos.end());
+	if (player_1.canShoot()) {
+		Bomb *shotBomb = player_1.shoot();
+		float size = TILE_SIZE * SCALE_FACTOR;
+		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(player_1.verPosicion(), level.getDimensions(), Vector2f(size, size));
+		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions(), Vector2f(size, size));
+		shotBomb->changePosition(bombAdjustedPosition);
+		bombs.push_back(shotBomb);
+	}
+	if (player_2.canShoot()) {
+		Bomb *shotBomb = player_2.shoot();
+		float size = TILE_SIZE * SCALE_FACTOR;
+		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(player_2.verPosicion(), level.getDimensions(), Vector2f(size, size));
+		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions(), Vector2f(size, size));
+		shotBomb->changePosition(bombAdjustedPosition);
+		bombs.push_back(shotBomb);
+	}
 }
 
 void Match::draw(RenderWindow &w)
@@ -68,8 +68,8 @@ void Match::draw(RenderWindow &w)
 	level.draw(w);
 	player_1.draw(w);
 	player_2.draw(w);
-	for (Bomb &d : m_disparos)
-		d.draw(w);
+	for (Bomb *d : bombs)
+		d->draw(w);
 }
 
 void Match::loadMatrix(string fileName)

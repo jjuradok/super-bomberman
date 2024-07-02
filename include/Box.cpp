@@ -6,6 +6,7 @@
 #include "ScreenPosition.h"
 
 using namespace std;
+using namespace sf;
 
 Box::Box(bool isDestructible, Vector2f position) : isDestructible(isDestructible), position(position)
 {
@@ -16,7 +17,7 @@ Box::Box(bool isDestructible, Vector2f position) : isDestructible(isDestructible
   m_spr.setScale(SCALE_FACTOR, SCALE_FACTOR);
 }
 
-void Box::draw(sf::RenderWindow &w)
+void Box::draw(RenderWindow &w)
 {
   w.draw(m_spr);  
 }

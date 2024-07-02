@@ -17,7 +17,7 @@ class Match : public Scene
 	Player player_1;
 	Player player_2;
 	Level level;
-	vector<Bomb> m_disparos;
+	vector<Bomb*> bombs;
 	void loadMatrix(string fileName);
 public:
 	Match();
