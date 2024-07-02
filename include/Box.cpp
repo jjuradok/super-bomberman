@@ -1,21 +1,23 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Box.h"
 #include "config/ResourcesLocation.h"
 #include "config/Config.h"
-#include <iostream>
+#include "ScreenPosition.h"
 
 using namespace std;
 
-Box::Box(bool isDestructible): isDestructible(isDestructible) {
+Box::Box(bool isDestructible, Vector2f position) : isDestructible(isDestructible), position(position)
+{
   string texSrc = isDestructible ? DESTRUCTIBLE_BOX_TEXTURE : INDESTRUCTIBLE_BOX_TEXTURE ;
   m_tex.loadFromFile(texSrc);
   m_spr.setTexture(m_tex);
+  m_spr.setPosition(position);
+  m_spr.setScale(SCALE_FACTOR, SCALE_FACTOR);
 }
 
 void Box::draw(sf::RenderWindow &w)
 {
-  m_spr.setScale(SCALE_FACTOR, SCALE_FACTOR);
-  setPosition(position);
   w.draw(m_spr);  
 }
 
@@ -37,4 +39,10 @@ FloatRect Box::getGlobalBounds() {
 bool Box::getIsDestructible()
 {
   return isDestructible;
+}
+
+Vector2f Box::getDimensions() {
+  float boxSize = TILE_SIZE * SCALE_FACTOR;
+  
+  return Vector2f(boxSize, boxSize);
 }
