@@ -1,5 +1,5 @@
 #include "Settings.h"
-#include "config/Config.h"
+#include "config/ResourcesLocation.h"
 #include <fstream>
 #include <iostream>
 
