@@ -7,14 +7,14 @@ using namespace sf;
 
 class Box {
   Vector2f position;
-  sf::Texture m_tex;
-  sf::Sprite m_spr;
+  Texture m_tex;
+  Sprite m_spr;
   bool isDestructible;
   public:
     Box(bool isDestructible, Vector2f position);
     bool getIsDestructible();
     void update();
-    void draw(sf::RenderWindow &w);
+    void draw(RenderWindow &w);
     void setPosition(Vector2f pos);
     Vector2f getPosition();
     Vector2f getDimensions();

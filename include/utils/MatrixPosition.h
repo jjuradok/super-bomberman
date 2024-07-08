@@ -6,4 +6,6 @@ struct MatrixPosition
   int i, j;
 };
 
+bool operator==(const MatrixPosition &a, const MatrixPosition &b);
+
 #endif

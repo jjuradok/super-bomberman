@@ -17,6 +17,113 @@
 
 using namespace std;
 
+//TODO: refactorizar esta funcion
+vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game)
+{
+	vector<vector<char>> updatedMatrix = matrix;
+	int rows = matrix.size();
+	int columns = matrix[0].size();
+	vector <Player *> players = { &player_1, &player_2 };
+
+	vector<char> bombRow = matrix[bombPosition.i];
+	vector<char> bombColumn(rows);
+	MatrixPosition explosionPosition, playerPosition;
+
+			for (int i = 0; i < rows; ++i)
+	{
+		bombColumn[i] = matrix[i][bombPosition.j];
+	}
+
+	for (int j = bombPosition.j; j < columns; ++j)
+	{
+		explosionPosition = MatrixPosition({bombPosition.i,j});
+
+		for (Player *player : players)
+		{
+			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
+			if (playerPosition == explosionPosition)
+			{
+				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+			}
+		}
+		if (bombRow[j] == SOLID_TILE)
+			break;
+		if (bombRow[j] == DESTRUCTIBLE_TILE)
+		{
+			bombRow[j] = EMPTY_TILE;
+			break;
+		}
+	}
+	
+	for (int j = bombPosition.j; j >= 0; --j)
+	{
+		explosionPosition = MatrixPosition({bombPosition.i, j});
+		for (Player *player : players)
+		{
+			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
+			if (playerPosition == explosionPosition)
+			{
+				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+			}
+		}
+		if (bombRow[j] == SOLID_TILE)
+			break;
+		if (bombRow[j] == DESTRUCTIBLE_TILE)
+		{
+			bombRow[j] = EMPTY_TILE;
+			break;
+		}
+	}
+	
+	for (int i = bombPosition.i; i < rows; ++i)
+	{
+		explosionPosition = MatrixPosition({i, bombPosition.j});
+		for (Player *player : players)
+		{
+			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
+			if (playerPosition == explosionPosition)
+			{
+				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+			}
+		}
+		if (bombColumn[i] == SOLID_TILE)
+			break;
+		if (bombColumn[i] == DESTRUCTIBLE_TILE)
+		{
+			bombColumn[i] = EMPTY_TILE;
+			break;
+		}
+	}
+	
+	for (int i = bombPosition.i; i >= 0; --i)
+	{
+		explosionPosition = MatrixPosition({i, bombPosition.j});
+		for (Player *player : players)
+		{
+			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
+			if (playerPosition == explosionPosition)
+			{
+				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+			}
+		}
+		if (bombColumn[i] == SOLID_TILE)
+			break;
+		if (bombColumn[i] == DESTRUCTIBLE_TILE)
+		{
+			bombColumn[i] = EMPTY_TILE;
+			break;
+		}
+	}
+
+	// Reemplazo la fila y columna en la matriz actualizada
+	updatedMatrix[bombPosition.i] = bombRow;
+	for (int i = 0; i < rows; ++i)
+	{
+		updatedMatrix[i][bombPosition.j] = bombColumn[i];
+	}
+	return updatedMatrix;
+}
+
 Match::Match() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100))
 {
 	loadMatrix(TEST_LEVEL_LAYOUT);
@@ -32,34 +139,44 @@ Match::Match() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(
 	player_2.changePosition(player2PositionPixels);
 }
 
-bool colisiona(Disparo &d, Player &t)
-{
-	Vector2f pd = d.verPosicion();
-	Vector2f pt = t.verPosicion();
-	Vector2f v = pd - pt;
-	return sqrt(v.x * v.x + v.y * v.y) < 25;
-}
 
-bool fuera_de_la_pantalla(Disparo &d)
-{
-	Vector2f p = d.verPosicion();
-	if (p.x < 0 or p.x > 800)
-		return true;
-	if (p.y < 0 or p.y > 600)
-		return true;
-	return false;
-}
-
-void Match::update(Game &j)
-{
+void Match::update(Game &j) {
 	player_1.update(level);
 	player_2.update(level);
+	float size = TILE_SIZE * SCALE_FACTOR;
+
+	for (Bomb *bomb : bombs)
+	{
+		if (bomb->shouldExplode())
+		{
+			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(bomb->getPosition(), level.getDimensions());
+			vector<vector<char>> updatedMatrix = updateMatrixAfterExplosion(bombPositionInMatrix, j);
+			matrix = updatedMatrix;
+			level.update(updatedMatrix);
+
+			removeBomb(bomb);
+		}
+	}
+	
+	vector<Player *> playersToShoot;
 	if (player_1.canShoot())
-		m_disparos.push_back(player_1.generarDisparo());
+		playersToShoot.push_back(&player_1);
 	if (player_2.canShoot())
-		m_disparos.push_back(player_2.generarDisparo());
-	auto it = remove_if(m_disparos.begin(), m_disparos.end(), fuera_de_la_pantalla);
-m_disparos.erase(it, m_disparos.end());
+		playersToShoot.push_back(&player_2);
+		
+	for (Player *player : playersToShoot) {
+		Bomb *shotBomb = player->shoot();
+		Vector2f playerCenterPosition = Vector2f(player->getPosition().x + size / 2, player->getPosition().y + size / 2);
+		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(playerCenterPosition, level.getDimensions());
+		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions());
+		shotBomb->changePosition(bombAdjustedPosition);
+		bombs.push_back(shotBomb);
+	}
+}
+
+void Match::removeBomb(Bomb *bomb) {
+	delete bomb;
+	bombs.erase(remove(bombs.begin(), bombs.end(), bomb), bombs.end());
 }
 
 void Match::draw(RenderWindow &w)
@@ -68,8 +185,8 @@ void Match::draw(RenderWindow &w)
 	level.draw(w);
 	player_1.draw(w);
 	player_2.draw(w);
-	for (Disparo &d : m_disparos)
-		d.draw(w);
+	for (Bomb *d : bombs)
+		d->draw(w);
 }
 
 void Match::loadMatrix(string fileName)

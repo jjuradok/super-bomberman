@@ -1,7 +1,7 @@
 #ifndef MATCH_H
 #define MATCH_H
 
-#include "Disparo.h"
+#include "Bomb.h"
 #include <vector>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Scene.h"
@@ -17,12 +17,16 @@ class Match : public Scene
 	Player player_1;
 	Player player_2;
 	Level level;
-	vector<Disparo> m_disparos;
+	vector<Bomb*> bombs;
 	void loadMatrix(string fileName);
+	void removeBomb(Bomb *bomb);
+	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
+
 public:
 	Match();
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
+
 };
 
 #endif
