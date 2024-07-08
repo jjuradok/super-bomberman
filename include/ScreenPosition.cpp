@@ -1,6 +1,5 @@
 #include <iostream>
 #include "ScreenPosition.h"
-#include "config/Config.h"
 #include "Settings.h"
 #include "utils/MatrixPosition.h"
 
@@ -18,7 +17,8 @@ Vector2f getPositionCenteredIntoLevel(const Vector2f &position, const Vector2f &
   return Vector2f(x, y);
 }
 
-Vector2f parseMatrixPositionIntoPixels(MatrixPosition position, Vector2f levelSize, Vector2f tileSize) {
+Vector2f parseMatrixPositionIntoPixels(MatrixPosition position, Vector2f levelSize, Vector2f tileSize)
+{
   int posX = position.j * tileSize.x;
   int posY = position.i * tileSize.y ;
   Vector2f positionCentered = getPositionCenteredIntoLevel(Vector2f(posX,posY), levelSize, tileSize);
@@ -26,10 +26,12 @@ Vector2f parseMatrixPositionIntoPixels(MatrixPosition position, Vector2f levelSi
   return positionCentered;
 }
 
-MatrixPosition parsePixelsIntoMatrixPosition(Vector2f position, Vector2f levelSize, Vector2f tileSize) {
+MatrixPosition parsePixelsIntoMatrixPosition(Vector2f position, Vector2f levelSize, Vector2f tileSize)
+{
   Settings settings;
   unsigned int screen_width = settings.getScreenWidth();
   unsigned int screen_height = settings.getScreenHeight();
+
 
   float xMatrix = position.x - (screen_width - levelSize.x) / 2;
   float yMatrix = position.y - (screen_height - levelSize.y) / 2;
