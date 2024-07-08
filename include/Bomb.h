@@ -14,12 +14,14 @@ public:
 	void update();
 	void draw(RenderWindow &w);
 	void changePosition(Vector2f newPosition);
-	Vector2f verPosicion();
+	bool shouldExplode();
+	Vector2f getPosition();
 private:
 	char playerOrigin;
 	Texture bombTexture;
 	Sprite bombSprite;
 	Vector2f mVel;
+	Clock bombClock;
 };
 
 #endif
