@@ -33,9 +33,9 @@ bool Player::checkCollision(Level &level, Vector2f movement)
 	return false;
 }
 
-Player::Player(bool isPrimary, Vector2f position): isPrimary(isPrimary)
+Player::Player(bool isPlayerOne, Vector2f position): isPlayerOne(isPlayerOne)
 {
-	string textureSrc = isPrimary ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
+	string textureSrc = isPlayerOne ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
 	m_tex.loadFromFile(textureSrc);
 	m_spr.setTexture(m_tex);
 
@@ -48,7 +48,7 @@ Player::Player(bool isPrimary, Vector2f position): isPrimary(isPrimary)
 
 	m_spr.setScale(PLAYER_SCALE_FACTOR, PLAYER_SCALE_FACTOR);
 	m_spr.setPosition(position);
-	if (isPrimary)
+	if (isPlayerOne)
 	{
 		m_right = Keyboard::D;
 		m_left = Keyboard::A;
@@ -108,7 +108,7 @@ void Player::draw(RenderWindow &w)
 
 bool Player::canShoot()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() < 500)
+	if (m_clock.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME)
 		return false;
 	if (!Keyboard::isKeyPressed(m_shoot))
 		return false;
@@ -118,7 +118,7 @@ bool Player::canShoot()
 
 Bomb *Player::shoot()
 {
-	char playerOrigin = isPrimary ? PLAYER_ONE_ID : PLAYER_TWO_ID;
+	char playerOrigin = isPlayerOne ? PLAYER_ONE_ID : PLAYER_TWO_ID;
 	Bomb bomb(playerOrigin);
 	return new Bomb(playerOrigin);
 }
@@ -130,7 +130,7 @@ Vector2f Player::getDimensions() {
 	return Vector2f(width, height);
 }
 
-Vector2f Player::verPosicion()
+Vector2f Player::getPosition()
 {
 	return m_spr.getPosition();
 }
@@ -139,3 +139,5 @@ void Player::changePosition(Vector2f newPosition)
 {
 	m_spr.setPosition(newPosition);
 }
+
+bool Player::getIsPlayerOne() { return isPlayerOne; }
