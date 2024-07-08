@@ -19,10 +19,14 @@ class Match : public Scene
 	Level level;
 	vector<Bomb*> bombs;
 	void loadMatrix(string fileName);
+	void removeBomb(Bomb *bomb);
+	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
+
 public:
 	Match();
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
+
 };
 
 #endif
