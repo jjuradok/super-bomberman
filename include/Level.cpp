@@ -28,6 +28,12 @@ int Level::getColumns() const
 
 Level::Level(vector<vector<char>> matrix) : matrix(matrix)
 {
+  update(matrix);
+}
+
+void Level::update(vector<vector<char>> matrix)
+{
+  boxes.clear();
   int rows = matrix.size();
   int columns = matrix[0].size();
   for (int i = 0; i < rows; i++)

@@ -26,6 +26,7 @@ public:
   MatrixPosition findPosition(char tile);
   Vector2f getDimensions();
   void draw(RenderWindow &w);
+  void update(vector<vector<char>> matrix);
 };
 
 #endif // LEVEL_H
