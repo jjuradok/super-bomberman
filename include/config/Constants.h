@@ -5,9 +5,16 @@
 #include <vector>
 using namespace std;
 
-enum CollisionTiles {
-  DESTRUCTIBLE = 'X',
-  INDESTRUCTIBLE = 'O'
+enum TILES {
+  EMPTY_TILE = '-',
+  SOLID_TILE = 'O',
+  DESTRUCTIBLE_TILE = 'X'
+};
+
+enum CollisionTiles
+{
+  DESTRUCTIBLE = DESTRUCTIBLE_TILE,
+  INDESTRUCTIBLE = SOLID_TILE
 };
 const vector<char> COLLISION_TILES = {DESTRUCTIBLE, INDESTRUCTIBLE};
 
