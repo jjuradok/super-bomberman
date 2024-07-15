@@ -6,15 +6,18 @@
 #include <SFML/Graphics.hpp>
 #include "Box.h"
 #include "utils/MatrixPosition.h"
+#include "LevelResources.h"
 
 using namespace std;
 using namespace sf;
 class Level
 {
   int rows, columns;
-  vector<shared_ptr<Box>> boxes;
+  vector<Box *> boxes;
   string fileName;
   vector<vector<char>> matrix;
+  LevelResources levelResources;
+  Box *handleCreateBox(MatrixPosition position, string levelId);
 public:
   Level(vector<vector<char>> matrix);
   Level();
@@ -22,7 +25,7 @@ public:
   int getColumns() const;
   int getTile(int x, int y) const;
   vector<vector<char>> getMatrix() const;
-  vector<shared_ptr<Box>> getLevelBoxes();
+  vector<Box *> getLevelBoxes();
   MatrixPosition findPosition(char tile);
   Vector2f getDimensions();
   void draw(RenderWindow &w);
