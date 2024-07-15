@@ -9,31 +9,7 @@
 using namespace std;
 using namespace sf;
 
-FloatRect Player::getCollisionBounds()
-{
-	float collisionY = m_spr.getPosition().y + TILE_SIZE * PLAYER_SCALE_FACTOR - TILE_SIZE * PLAYER_SCALE_FACTOR / 2;
-	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, TILE_SIZE * PLAYER_SCALE_FACTOR, TILE_SIZE * PLAYER_SCALE_FACTOR);
-	return collisionRect;
-}
-
-bool Player::checkCollision(Level &level, Vector2f movement)
-{
-	FloatRect futureBounds = this->getCollisionBounds();
-	futureBounds.left += movement.x;
-	futureBounds.top += movement.y;
-
-	vector<shared_ptr<Box>> levelBoxes = level.getLevelBoxes();
-	for (auto &box : levelBoxes)
-	{
-		if (box->getGlobalBounds().intersects(futureBounds))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-Player::Player(bool isPlayerOne, Vector2f position): isPlayerOne(isPlayerOne)
+Player::Player(bool isPlayerOne, Vector2f position) : isPlayerOne(isPlayerOne)
 {
 	string textureSrc = isPlayerOne ? PLAYER_TEXTURE : SECOND_PLAYER_TEXTURE;
 	m_tex.loadFromFile(textureSrc);
@@ -44,7 +20,7 @@ Player::Player(bool isPlayerOne, Vector2f position): isPlayerOne(isPlayerOne)
 	int spriteWidth = TILE_SIZE;
 	int spriteHeight = TILE_SIZE;
 
-	m_spr.setOrigin(0,0);
+	m_spr.setOrigin(0, 0);
 
 	m_spr.setScale(PLAYER_SCALE_FACTOR, PLAYER_SCALE_FACTOR);
 	m_spr.setPosition(position);
@@ -64,6 +40,30 @@ Player::Player(bool isPlayerOne, Vector2f position): isPlayerOne(isPlayerOne)
 		m_down = Keyboard::Down;
 		m_shoot = Keyboard::Space;
 	}
+}
+
+FloatRect Player::getCollisionBounds()
+{
+	float collisionY = m_spr.getPosition().y + TILE_SIZE * PLAYER_SCALE_FACTOR - TILE_SIZE * PLAYER_SCALE_FACTOR / 2;
+	FloatRect collisionRect = FloatRect(m_spr.getPosition().x, collisionY, TILE_SIZE * PLAYER_SCALE_FACTOR, TILE_SIZE * PLAYER_SCALE_FACTOR);
+	return collisionRect;
+}
+
+bool Player::checkCollision(Level &level, Vector2f movement)
+{
+	FloatRect futureBounds = this->getCollisionBounds();
+	futureBounds.left += movement.x;
+	futureBounds.top += movement.y;
+
+	vector<Box *>levelBoxes = level.getLevelBoxes();
+	for (auto &box : levelBoxes)
+	{
+		if (box->getGlobalBounds().intersects(futureBounds))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Player::update(Level &level)
