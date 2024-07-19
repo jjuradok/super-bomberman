@@ -43,7 +43,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -63,7 +63,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -83,7 +83,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -103,7 +103,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -124,10 +124,14 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 	return updatedMatrix;
 }
 
-Match::Match() : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100))
+string Match::get_lvl_loaded() {
+	return lvl_loaded;
+}
+
+Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(lvl_name), level(lvl_name)
 {
-	loadMatrix(TEST_LEVEL_LAYOUT);
-	level = Level(matrix);
+	loadMatrix("resources/levels/"+lvl_name+".txt");
+	level = Level(matrix, lvl_name);
 	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
 	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
 	float size = TILE_SIZE * SCALE_FACTOR;
@@ -214,3 +218,4 @@ void Match::loadMatrix(string fileName)
 	file.close();
 
 }
+

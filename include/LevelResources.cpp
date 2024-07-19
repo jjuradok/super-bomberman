@@ -4,8 +4,7 @@
 #include "config/ResourcesLocation.h"
 using namespace std;
 
-
-LevelResources::LevelResources(string levelId) : levelId(levelId)
+    LevelResources::LevelResources(string levelId) : levelId(levelId)
 {
   string assetsInitialPath = levelAssetsFolder(levelId);
   string destructibleBoxPath = assetsInitialPath + DESTRUCTIBLE_BOX_LEVEL_TEXTURE;
