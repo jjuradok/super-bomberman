@@ -53,6 +53,9 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			bombRow[j] = EMPTY_TILE;
 			break;
 		}
+		if (bombRow[j] == EMPTY_TILE) {
+			bombRow[j] = EXPLOSION_TILE;
+		}
 	}
 	
 	for (int j = bombPosition.j; j >= 0; --j)
@@ -72,6 +75,9 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 		{
 			bombRow[j] = EMPTY_TILE;
 			break;
+		}
+		if (bombRow[j] == EMPTY_TILE) {
+			bombRow[j] = EXPLOSION_TILE;
 		}
 	}
 	
@@ -93,6 +99,9 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			bombColumn[i] = EMPTY_TILE;
 			break;
 		}
+		if (bombColumn[i] == EMPTY_TILE) {
+			bombColumn[i] = EXPLOSION_TILE;
+		}
 	}
 	
 	for (int i = bombPosition.i; i >= 0; --i)
@@ -112,6 +121,9 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 		{
 			bombColumn[i] = EMPTY_TILE;
 			break;
+		}
+		if (bombColumn[i] == EMPTY_TILE) {
+			bombColumn[i] = EXPLOSION_TILE;
 		}
 	}
 

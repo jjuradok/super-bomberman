@@ -123,6 +123,16 @@ void Level::draw(RenderWindow &w)
       groundSprite.setPosition(position);
       groundSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
       w.draw(groundSprite);
+      if (matrix[i][j] == EXPLOSION_TILE)
+      {
+        cout << "Drawing explosion" << endl;
+        Sprite explosionSprite;
+        Texture explosionTexture = levelResources.getExplosionTexture();
+        explosionSprite.setTexture(explosionTexture);
+        explosionSprite.setPosition(position);
+        explosionSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
+        w.draw(explosionSprite);
+      }
     }
   }
 

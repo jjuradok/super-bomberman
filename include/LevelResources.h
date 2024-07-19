@@ -8,7 +8,7 @@ using namespace sf;
 
 class LevelResources {
   string levelId;
-  Texture groundTexture, destructibleBoxTexture, indestructibleBoxTexture, borderBoxTexture, cornerBoxTexture;
+  Texture groundTexture, destructibleBoxTexture, indestructibleBoxTexture, borderBoxTexture, cornerBoxTexture, explosionTexture;
   public: 
   LevelResources(string levelId);
   Texture& getGroundTexture();
@@ -16,6 +16,7 @@ class LevelResources {
   Texture& getIndestructibleBoxTexture();
   Texture& getBorderBoxTexture();
   Texture& getCornerBoxTexture();
+  Texture& getExplosionTexture();
 };
 
 #endif

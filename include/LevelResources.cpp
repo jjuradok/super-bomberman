@@ -20,6 +20,7 @@ LevelResources::LevelResources(string levelId) : levelId(levelId)
   indestructibleBoxTexture.loadFromFile(indestructibleBoxPath);
   borderBoxTexture.loadFromFile(borderBoxPath);
   cornerBoxTexture.loadFromFile(cornerBoxPath);
+  explosionTexture.loadFromFile(EXPLOSION_TEXTURE);
 };
 
 Texture &LevelResources::getGroundTexture()
@@ -45,4 +46,9 @@ Texture &LevelResources::getBorderBoxTexture()
 Texture &LevelResources::getCornerBoxTexture()
 {
   return cornerBoxTexture;
+}
+
+Texture &LevelResources::getExplosionTexture()
+{
+  return explosionTexture;
 }
