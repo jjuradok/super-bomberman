@@ -9,7 +9,7 @@ using namespace std;
 
 Settings settings;
 
-Game::Game(Scene *e) : m_win(VideoMode(settings.getScreenWidth(), settings.getScreenHeight()), "Test")
+Game::Game(Scene *e) : m_win(VideoMode(settings.getScreenWidth(), settings.getScreenHeight()), "Bomberman")
 {
 	m_win.setFramerateLimit(60);
 	m_esc = e;

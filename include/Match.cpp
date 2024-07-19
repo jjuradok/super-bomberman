@@ -128,10 +128,10 @@ string Match::get_lvl_loaded() {
 	return lvl_loaded;
 }
 
-Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(lvl_name)
+Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(lvl_name), level(lvl_name)
 {
 	loadMatrix("resources/levels/"+lvl_name+".txt");
-	level = Level(matrix);
+	level = Level(matrix, lvl_name);
 	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
 	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
 	float size = TILE_SIZE * SCALE_FACTOR;
