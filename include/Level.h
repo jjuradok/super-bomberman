@@ -20,7 +20,6 @@ class Level
   LevelResources levelResources;
   Box *handleCreateBox(MatrixPosition position, string levelId);
 public:
-  Level(vector<vector<char>> matrix, const string &lvl_name);
   Level(const string &lvl_name);
   int getRows() const;
   int getColumns() const;
@@ -29,6 +28,7 @@ public:
   vector<Box *> getLevelBoxes();
   MatrixPosition findPosition(char tile);
   Vector2f getDimensions();
+  void loadMatrix(vector<vector<char>> matrix);
   void loadLevel(const string &lvl_name);
   void draw(RenderWindow &w);
   void update(vector<vector<char>> matrix);

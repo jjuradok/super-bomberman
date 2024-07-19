@@ -28,12 +28,12 @@ int Level::getColumns() const
   return matrix[0].size();
 }
 
-Level::Level(vector<vector<char>> matrix, const string &lvl_name) : matrix(matrix), levelResources(lvl_name), lvl_loaded(lvl_name)
-{
+void Level::loadMatrix(vector<vector<char>> matrix) {
+  matrix = matrix;
   update(matrix);
 }
 
-Level::Level(const string &lvl_name): levelResources(lvl_name){};
+Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name){};
 
 Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 {
