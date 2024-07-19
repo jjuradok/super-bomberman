@@ -12,4 +12,12 @@ const string DESTRUCTIBLE_BOX_TEXTURE="assets/textures/destructible_box.png";
 const string INDESTRUCTIBLE_BOX_TEXTURE = "assets/textures/indestructible_box.png";
 const string TEST_LEVEL_LAYOUT = "resources/levels/test.txt";
 
+const string DESTRUCTIBLE_BOX_LEVEL_TEXTURE = "textures/box/destructible/single.png";
+const string INDESTRUCTIBLE_BOX_LEVEL_TEXTURE = "textures/box/indestructible/single.png";
+const string BORDER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/border.png";
+const string CORNER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/corner.png";
+const string BOTTOM_BORDER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/bottom.png";
+const string GROUND_LEVEL_TEXTURE = "textures/background/ground.png";
+
+string levelAssetsFolder(string levelId);
 #endif

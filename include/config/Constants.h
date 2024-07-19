@@ -8,15 +8,17 @@ using namespace std;
 enum TILES {
   EMPTY_TILE = '-',
   SOLID_TILE = 'O',
-  DESTRUCTIBLE_TILE = 'X'
+  DESTRUCTIBLE_TILE = 'X',
+  BORDER = '*'
 };
 
 enum CollisionTiles
 {
   DESTRUCTIBLE = DESTRUCTIBLE_TILE,
-  INDESTRUCTIBLE = SOLID_TILE
+  INDESTRUCTIBLE = SOLID_TILE,
 };
-const vector<char> COLLISION_TILES = {DESTRUCTIBLE, INDESTRUCTIBLE};
+
+const vector<char> COLLISION_TILES = {DESTRUCTIBLE, BORDER ,INDESTRUCTIBLE};
 
 const char PLAYER_ONE_ID = '1';
 const char PLAYER_TWO_ID = '2';

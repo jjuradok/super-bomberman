@@ -8,8 +8,10 @@
 #include "config/Constants.h"
 #include "utils/Vector.h"
 #include "ScreenPosition.h"
+#include "LevelResources.h"
 
 using namespace std;
+using namespace sf;
 
 vector<vector<char>> Level::getMatrix() const
 {
@@ -26,38 +28,104 @@ int Level::getColumns() const
   return matrix[0].size();
 }
 
-Level::Level(vector<vector<char>> matrix) : matrix(matrix)
+Level::Level(vector<vector<char>> matrix) : matrix(matrix), levelResources("test")
 {
   update(matrix);
 }
 
-void Level::update(vector<vector<char>> matrix)
+Level::Level(): levelResources("test"){};
+
+Box *Level::handleCreateBox(MatrixPosition position, string levelId)
+{
+  int i = position.i;
+  int j = position.j;
+  bool isDestructible = matrix[i][j] == DESTRUCTIBLE;
+  bool isBorder = matrix[i][j] == BORDER;
+
+  int boxSize = TILE_SIZE * SCALE_FACTOR;
+  Vector2f boxPosition(j * boxSize, i * boxSize);
+  Vector2f positionCentered = getPositionCenteredIntoLevel(boxPosition, this->getDimensions(), Vector2f(boxSize, boxSize));
+  Vector2f pos = Vector2f(positionCentered.x + boxSize / 2, positionCentered.y + boxSize / 2);
+  Box *box = new Box(isDestructible, pos, levelId);
+
+  if (isBorder)
+  {
+    bool isCorner = (i == 0 && j == 0) || (i == 0 && j == columns - 1) || (i == rows - 1 && j == 0) || (i == rows - 1 && j == columns - 1);
+    bool isRightBorder = j == columns - 1;
+    bool isTopBorder = i == 0;
+    bool isBottomBorder = i == rows - 1;
+    Texture boxTexture = isCorner ? levelResources.getCornerBoxTexture() : levelResources.getBorderBoxTexture();
+    delete box;
+    box = new Box(boxTexture, pos);
+    if (isRightBorder && !isCorner)
+    {
+      box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
+    }
+    if (isTopBorder && !isCorner)
+    {
+      box->setRotation(90);
+    }
+    if (isBottomBorder && !isCorner)
+    {
+      box->setRotation(-90);
+    }
+    if (isCorner && isRightBorder && isTopBorder)
+    {
+      box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
+      box->setRotation(-90);
+    }
+    if (isCorner && isRightBorder && isBottomBorder)
+    {
+      box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
+    }
+    if (isCorner && !isRightBorder && isTopBorder)
+    {
+      box->setRotation(90);
+    }
+  }
+  return box;
+}
+
+void Level::update(vector<vector<char>> newMatrix)
 {
   boxes.clear();
-  int rows = matrix.size();
-  int columns = matrix[0].size();
+  this->matrix = newMatrix;
+  rows = matrix.size();
+  columns = matrix[0].size();
+
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
     {
       if (includes(COLLISION_TILES, matrix[i][j]))
       {
-        bool isDestructible = matrix[i][j] == DESTRUCTIBLE;
-        int boxSize = TILE_SIZE * SCALE_FACTOR;
-        Vector2f levelSize(columns * boxSize, rows * boxSize);
-        Vector2f boxPosition(j * boxSize, i * boxSize);
-        Vector2f pos = getPositionCenteredIntoLevel(boxPosition, levelSize, Vector2f(boxSize, boxSize));
-        auto box = make_shared<Box>(isDestructible, pos);
-        boxes.push_back(box);
+        MatrixPosition position = {i, j};
+        Box *box = handleCreateBox(position, "test");
+        if (box != nullptr)
+        {
+          boxes.push_back(box);
+        } 
       }
     }
   }
 }
 
-Level::Level() {}
-
-void Level::draw(sf::RenderWindow &w)
+void Level::draw(RenderWindow &w)
 {
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < columns; j++)
+    {
+      Vector2f position = getPositionCenteredIntoLevel(Vector2f(j * TILE_SIZE * SCALE_FACTOR, i * TILE_SIZE * SCALE_FACTOR), this->getDimensions(), Vector2f(TILE_SIZE * SCALE_FACTOR, TILE_SIZE * SCALE_FACTOR));
+      Sprite groundSprite;
+      Texture groundTexture = levelResources.getGroundTexture();
+      groundSprite.setTexture(groundTexture);
+      groundSprite.setPosition(position);
+      groundSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
+      w.draw(groundSprite);
+    }
+  }
+
   for (auto &box : boxes)
   {
     box->draw(w);
@@ -90,7 +158,7 @@ Vector2f Level::getDimensions() {
   return Vector2f(width, height);
 }
 
-vector<shared_ptr<Box>> Level::getLevelBoxes()
+vector<Box *> Level::getLevelBoxes()
 {
   return boxes;
 }
