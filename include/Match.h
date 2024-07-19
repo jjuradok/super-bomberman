@@ -21,9 +21,11 @@ class Match : public Scene
 	void loadMatrix(string fileName);
 	void removeBomb(Bomb *bomb);
 	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
+	string lvl_loaded;
 
 public:
-	Match();
+	Match(const string &lvl_name);
+	string get_lvl_loaded();
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
 

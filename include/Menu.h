@@ -7,7 +7,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include "Scene.h"LevelSelector.cpp
+#include "Scene.h"
 using namespace sf;
 
 class Game;
@@ -17,7 +17,6 @@ class Menu : public Scene{
         Menu();
         void update(Game &j) override;
         void draw(RenderWindow &w) override;
-        void handleEvent(sf::Event &event, Game &j);
         void updateTextColor(sf::Text& text, Game& j);
     private:
         Font m_font;

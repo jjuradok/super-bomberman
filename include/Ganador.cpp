@@ -1,14 +1,29 @@
 #include "Ganador.h"
 #include "Match.h"
 #include "Game.h"
+#include "LevelSelector.h"
+#include "Menu.h"
 
-Ganador::Ganador(bool player_one)
+std::string Ganador::get_lvl_played() {
+	return m_lvl_played;
+}
+
+Ganador::Ganador(bool player_one,const std::string &lvl_played): m_lvl_played(lvl_played)
 {
-	m_font.loadFromFile("assets/fonts/asap.ttf");
+	m_font.loadFromFile("assets/fonts/fuentegod.ttf");
+
 
 	m_text.setFont(m_font);
 	m_text.setPosition(250, 250);
-	m_text.setCharacterSize(40);
+	m_text.setCharacterSize(100);
+	m_replay.setFont(m_font);
+	m_replay.setPosition(250, 750);
+	m_replay.setCharacterSize(50);
+	m_replay.setString("Replay");
+	m_mm.setFont(m_font);
+	m_mm.setPosition(750, 750);
+	m_mm.setCharacterSize(50);
+	m_mm.setString("Back!");
 	if (player_one)
 	{
 		m_text.setString("Player One Wins!");
@@ -21,14 +36,22 @@ Ganador::Ganador(bool player_one)
 	}
 }
 
-void Ganador::update(Game &j)
-{
-	if (Keyboard::isKeyPressed(Keyboard::Return))
-		j.changeScene(new Match);
-}
+void Ganador::update(Game &j) {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+		if (m_replay.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+			j.changeScene(new Match(this->get_lvl_played()));
+		}
 
+		if (m_mm.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+			j.changeScene(new Menu);
+		}
+	}
+}
 void Ganador::draw(RenderWindow &w)
 {
 	w.clear(Color(0, 0, 0));
 	w.draw(m_text);
+	w.draw(m_replay);
+	w.draw(m_mm);
 }
+

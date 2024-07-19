@@ -2,7 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include "Settings.h"
 #include <iostream>
-#include <Level.h>
+#include "Level.h"
 
 using namespace sf;
 using namespace std;
@@ -51,4 +51,7 @@ Game::~Game()
 void Game::changeScene(Scene *nueva_escena)
 {
 	m_prox = nueva_escena;
+}
+sf::RenderWindow & Game::getWindow() {
+	return m_win;
 }

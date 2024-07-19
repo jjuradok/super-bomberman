@@ -43,7 +43,7 @@ void Menu::update(Game &j) {
         if (m_t3.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
             j.getWindow().close();
         }
-    }Menu.h
+    }
 }
 
 void Menu::updateTextColor(sf::Text& text, Game& j) {

@@ -16,11 +16,12 @@ public:
     LevelSelector();
     void update(Game &j) override;
     void draw(sf::RenderWindow &w) override;
-    void selectLevel(Game &j);
-
+    void selectLevel(Game &j,const std::string &lvl_name);
+    void loadLevels();
 private:
-    sf::Text m_t1;
-    std::vector<std::string> levelNames= {"test.txt"};
+    const std::string LEVEL_NAMES_SRC = "resources/level_names.txt";
+    sf::Text m_t1,m_t2;
+    std::vector<std::string> levelNames;
     std::vector<sf::Text> levelTexts;
     sf::Font m_font;
     int selectedItemIndex;
