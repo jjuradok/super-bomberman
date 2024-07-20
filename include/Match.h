@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Level.h"
 #include "Player.h"
+#include "Explosion.h"
 
 using namespace sf;
 using namespace std;
@@ -18,6 +19,7 @@ class Match : public Scene
 	Player player_2;
 	Level level;
 	vector<Bomb*> bombs;
+	vector<Explosion*> explosions;
 	void loadMatrix(string fileName);
 	void removeBomb(Bomb *bomb);
 	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
