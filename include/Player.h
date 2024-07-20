@@ -17,7 +17,7 @@ public:
 	bool canShoot();
 	Bomb *shoot();
 	Vector2f getPosition();
-	bool checkCollision(Level &level, Vector2f movement);
+	bool checkCollision(vector <FloatRect> boundings, Vector2f movement);
 	FloatRect getCollisionBounds();
 	Vector2f getDimensions();
 	void changePosition(Vector2f newPosition);
