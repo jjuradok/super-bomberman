@@ -5,6 +5,7 @@
 #include "config/Config.h"
 #include "config/ResourcesLocation.h"
 #include "config/Constants.h"
+#include "utils/Boundings.h"
 
 using namespace std;
 using namespace sf;
@@ -49,16 +50,15 @@ FloatRect Player::getCollisionBounds()
 	return collisionRect;
 }
 
-bool Player::checkCollision(Level &level, Vector2f movement)
+bool Player::checkCollision(vector<FloatRect> boundings, Vector2f movement)
 {
 	FloatRect futureBounds = this->getCollisionBounds();
 	futureBounds.left += movement.x;
 	futureBounds.top += movement.y;
 
-	vector<Box *>levelBoxes = level.getLevelBoxes();
-	for (auto &box : levelBoxes)
+	for (FloatRect bounding : boundings)
 	{
-		if (box->getGlobalBounds().intersects(futureBounds))
+		if (bounding.intersects(futureBounds))
 		{
 			return true;
 		}
@@ -69,32 +69,32 @@ bool Player::checkCollision(Level &level, Vector2f movement)
 void Player::update(Level &level)
 {
 	Vector2f movement(0.f, 0.f);
-
+	vector<FloatRect> boxesBoundings = getBoundingsFromEntities(level.getLevelBoxes());
 	if (Keyboard::isKeyPressed(m_right))
 	{
 		movement.x += PLAYER_SPEED;
-		if (!checkCollision(level, movement))
+		if (!checkCollision(boxesBoundings, movement))
 			m_spr.move(movement.x, 0);
 			movement.x = 0;
 	}
 	if (Keyboard::isKeyPressed(m_left))
 	{
 		movement.x -= PLAYER_SPEED;
-		if (!checkCollision(level, movement))
+		if (!checkCollision(boxesBoundings, movement))
 			m_spr.move(movement.x, 0);
 			movement.x = 0;
 	}
 	if (Keyboard::isKeyPressed(m_up))
 	{
 		movement.y -= PLAYER_SPEED;
-		if (!checkCollision(level, movement))
+		if (!checkCollision(boxesBoundings, movement))
 			m_spr.move(0, movement.y);
 			movement.y = 0;
 	}
 	if (Keyboard::isKeyPressed(m_down))
 	{
 		movement.y += PLAYER_SPEED;
-		if (!checkCollision(level, movement))
+		if (!checkCollision(boxesBoundings, movement))
 			m_spr.move(0, movement.y);
 			movement.y = 0;
 
