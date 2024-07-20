@@ -187,7 +187,7 @@ void Match::update(Game &j) {
 			explosion->update();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
-				j.changeScene(new Ganador(!player->getIsPlayerOne()));
+				j.changeScene(new Ganador(!player->getIsPlayerOne(), this->get_lvl_loaded()));
 			}
 		}
 	}
