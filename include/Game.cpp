@@ -2,14 +2,14 @@
 #include <SFML/Window/Event.hpp>
 #include "Settings.h"
 #include <iostream>
-#include <Level.h>
+#include "Level.h"
 
 using namespace sf;
 using namespace std;
 
 Settings settings;
 
-Game::Game(Scene *e) : m_win(VideoMode(settings.getScreenWidth(), settings.getScreenHeight()), "Test")
+Game::Game(Scene *e) : m_win(VideoMode(settings.getScreenWidth(), settings.getScreenHeight()), "Bomberman")
 {
 	m_win.setFramerateLimit(60);
 	m_esc = e;
@@ -51,4 +51,7 @@ Game::~Game()
 void Game::changeScene(Scene *nueva_escena)
 {
 	m_prox = nueva_escena;
+}
+sf::RenderWindow & Game::getWindow() {
+	return m_win;
 }

@@ -13,14 +13,14 @@ using namespace sf;
 class Level
 {
   int rows, columns;
+  string lvl_loaded;
   vector<Box *> boxes;
   string fileName;
   vector<vector<char>> matrix;
   LevelResources levelResources;
   Box *handleCreateBox(MatrixPosition position, string levelId);
 public:
-  Level(vector<vector<char>> matrix);
-  Level();
+  Level(const string &lvl_name);
   int getRows() const;
   int getColumns() const;
   int getTile(int x, int y) const;
@@ -28,6 +28,8 @@ public:
   vector<Box *> getLevelBoxes();
   MatrixPosition findPosition(char tile);
   Vector2f getDimensions();
+  void loadMatrix(vector<vector<char>> matrix);
+  void loadLevel(const string &lvl_name);
   void draw(RenderWindow &w);
   void update(vector<vector<char>> matrix);
 };

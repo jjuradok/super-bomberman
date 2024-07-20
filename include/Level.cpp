@@ -28,12 +28,12 @@ int Level::getColumns() const
   return matrix[0].size();
 }
 
-Level::Level(vector<vector<char>> matrix) : matrix(matrix), levelResources("test")
-{
+void Level::loadMatrix(vector<vector<char>> matrix) {
+  matrix = matrix;
   update(matrix);
 }
 
-Level::Level(): levelResources("test"){};
+Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name){};
 
 Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 {
@@ -100,7 +100,7 @@ void Level::update(vector<vector<char>> newMatrix)
       if (includes(COLLISION_TILES, matrix[i][j]))
       {
         MatrixPosition position = {i, j};
-        Box *box = handleCreateBox(position, "test");
+        Box *box = handleCreateBox(position, lvl_loaded);
         if (box != nullptr)
         {
           boxes.push_back(box);
