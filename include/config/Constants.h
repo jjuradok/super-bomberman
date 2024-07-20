@@ -9,7 +9,7 @@ enum TILES {
   EMPTY_TILE = '-',
   SOLID_TILE = 'O',
   DESTRUCTIBLE_TILE = 'X',
-  BORDER = '*'
+  BORDER = '*',
 };
 
 enum CollisionTiles
