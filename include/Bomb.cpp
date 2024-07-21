@@ -45,7 +45,7 @@ void Bomb::update()
 		{
 			textureCurrentFrame--;
 		}
-		if (textureCurrentFrame == EXPLOSION_ANIMATION_FRAMES - 1)
+		if (textureCurrentFrame == BOMB_ANIMATION_FRAMES - 1)
 		{
 			shouldIncreaseFrame = false;
 		}
