@@ -236,7 +236,7 @@ void Match::removeBomb(Bomb *bomb) {
 
 void Match::draw(RenderWindow &w)
 {
-	w.clear(Color(0x000000));
+	w.clear(Color(level.getLevelResources().getBackgroundColor()));
 	level.draw(w);
 	player_1.draw(w);
 	player_2.draw(w);

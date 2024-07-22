@@ -16,7 +16,7 @@ const string BORDER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/border.png"
 const string CORNER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/corner.png";
 const string BOTTOM_BORDER_BOX_LEVEL_TEXTURE = "textures/box/indestructible/bottom.png";
 const string GROUND_LEVEL_TEXTURE = "textures/background/ground.png";
-const string BACKGROUND_LEVEL_TEXTURE = "textures/background/background.png";
+const string BACKGROUND_COLOR_FILE = "config/background_color.txt";
 
 const string P1_TEXTURE_DOWN_FOLDER = "assets/textures/p1/self/down/";
 const string P1_TEXTURE_UP_FOLDER = "assets/textures/p1/self/up/";
