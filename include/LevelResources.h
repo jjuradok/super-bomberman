@@ -9,14 +9,19 @@ using namespace sf;
 class LevelResources {
   string levelId;
   Texture groundTexture,backgroundTexture ,destructibleBoxTexture, indestructibleBoxTexture, borderBoxTexture, cornerBoxTexture;
-  public: 
+  Sprite groundSprite;
+  Color backgroundColor;
+
+public:
   LevelResources(string levelId);
+  Color getBackgroundColor();
   Texture& getGroundTexture();
   Texture& getDestructibleBoxTexture();
   Texture& getIndestructibleBoxTexture();
   Texture& getBorderBoxTexture();
   Texture& getCornerBoxTexture();
   Texture& getBackgroundTexture();
+  Sprite& getGroundSprite();
 };
 
 #endif

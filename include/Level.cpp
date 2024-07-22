@@ -113,26 +113,16 @@ void Level::update(vector<vector<char>> newMatrix)
 
 void Level::draw(RenderWindow &w)
 {
-  Texture backgroundTexture = levelResources.getBackgroundTexture();
-  Sprite backgroundSprite;
-  backgroundSprite.setTexture(backgroundTexture);
-  Vector2f ImageSize = (Vector2f)backgroundSprite.getTexture()->getSize();
-  float scale = max(w.getSize().x / ImageSize.x, w.getSize().y / ImageSize.y);
-  backgroundSprite.setScale(scale, scale);
-  backgroundSprite.setColor(Color(255, 255, 255, 100));
-  w.draw(backgroundSprite);
-
+  float scale = max(w.getSize().x / levelResources.getBackgroundTexture().getSize().x, w.getSize().y / levelResources.getBackgroundTexture().getSize().y);
+  // levelResources.getBackgroundSprite().setScale(5, 5);
+  // w.draw(levelResources.getBackgroundSprite());
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
     {
       Vector2f position = getPositionCenteredIntoLevel(Vector2f(j * TILE_SIZE * SCALE_FACTOR, i * TILE_SIZE * SCALE_FACTOR), this->getDimensions(), Vector2f(TILE_SIZE * SCALE_FACTOR, TILE_SIZE * SCALE_FACTOR));
-      Sprite groundSprite;
-      Texture groundTexture = levelResources.getGroundTexture();
-      groundSprite.setTexture(groundTexture);
-      groundSprite.setPosition(position);
-      groundSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
-      w.draw(groundSprite);
+      levelResources.getGroundSprite().setPosition(position);
+      w.draw(levelResources.getGroundSprite());
     }
   }
 
