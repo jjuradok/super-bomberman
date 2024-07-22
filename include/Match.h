@@ -26,8 +26,8 @@ class Match : public Scene
 	string lvl_loaded;
 
 public:
-	Match(const string &lvl_name);
-	string get_lvl_loaded();
+	Match(const string &levelId);
+	string getLevelId();
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
 

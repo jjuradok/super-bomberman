@@ -45,7 +45,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->getLevelId()));
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -72,7 +72,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->getLevelId()));
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -99,7 +99,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->getLevelId()));
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -126,7 +126,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->get_lvl_loaded()));
+				game.changeScene(new Ganador(!player->getIsPlayerOne(),this->getLevelId()));
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -144,7 +144,7 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 		}
 	}
 
-	// Reemplazo la fila y columna en la matriz actualizada
+
 	updatedMatrix[bombPosition.i] = bombRow;
 	for (int i = 0; i < rows; ++i)
 	{
@@ -153,13 +153,13 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 	return updatedMatrix;
 }
 
-string Match::get_lvl_loaded() {
+string Match::getLevelId() {
 	return lvl_loaded;
 }
 
-Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(lvl_name), level(lvl_name)
+Match::Match(const string &levelId) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(levelId), level(levelId)
 {
-	loadMatrix("resources/levels/"+lvl_name+".txt");
+	loadMatrix("resources/levels/" + levelId + ".txt");
 	level.loadMatrix(matrix);
 	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
 	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
@@ -187,7 +187,7 @@ void Match::update(Game &j) {
 			explosion->updateAnimation();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
-				j.changeScene(new Ganador(!player->getIsPlayerOne(), this->get_lvl_loaded()));
+				j.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
 			}
 		}
 	}
@@ -229,7 +229,7 @@ void Match::removeBomb(Bomb *bomb) {
 
 void Match::draw(RenderWindow &w)
 {
-	w.clear(Color(220, 220, 180, 255));
+	w.clear(Color(0x000000));
 	level.draw(w);
 	player_1.draw(w);
 	player_2.draw(w);
