@@ -184,7 +184,7 @@ void Match::update(Game &j) {
 		vector<FloatRect> explosionBounds = getBoundingsFromEntities(explosions);
 		for (Explosion *explosion : explosions)
 		{
-			explosion->update();
+			explosion->updateAnimation();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
 				j.changeScene(new Ganador(!player->getIsPlayerOne(), this->get_lvl_loaded()));
@@ -194,7 +194,7 @@ void Match::update(Game &j) {
 
 	for (Bomb *bomb : bombs)
 	{
-		bomb->update();
+		bomb->updateAnimation();
 		if (bomb->shouldExplode())
 		{
 			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(bomb->getPosition(), level.getDimensions());

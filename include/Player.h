@@ -4,10 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include "Bomb.h"
 #include "Level.h"
+#include "Animated.h"
 
 using namespace sf;
 
-class Player
+class Player: public Animated
 {
 	bool isPlayerOne;
 public:
@@ -24,8 +25,6 @@ public:
 	bool getIsPlayerOne();	
 
 private:
-	Texture m_tex;
-	Sprite m_spr;
 	Keyboard::Key m_right, m_left, m_up, m_down, m_shoot;
 	Clock m_clock;
 };
