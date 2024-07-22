@@ -1,6 +1,7 @@
 #include "Explosion.h"
 #include "config/ResourcesLocation.h"
 #include "config/Config.h"
+#include "config/Constants.h"
 
 Explosion::Explosion(Vector2f position) : Animated(position,EXPLOSION_TEXTURES_FOLDER, EXPLOSION_ANIMATION_FRAMES)
 {
