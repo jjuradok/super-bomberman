@@ -1,7 +1,3 @@
-//
-// Created by Usuario on 7/10/2024.
-//
-
 #ifndef LEVELSELECTOR_H
 #define LEVELSELECTOR_H
 
@@ -10,20 +6,24 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-class Game;
+#include "utils/LevelConfig.h"
+#include "config/ResourcesLocation.h"
+
+using namespace std;
+using namespace sf;
 class LevelSelector : public Scene {
 public:
     LevelSelector();
     void update(Game &j) override;
-    void draw(sf::RenderWindow &w) override;
-    void selectLevel(Game &j,const std::string &lvl_name);
+    void draw(RenderWindow &w) override;
+    void selectLevel(Game &j,const string &lvl_id);
     void loadLevels();
+    LevelConfig getLevelConfig(string id);
 private:
-    const std::string LEVEL_NAMES_SRC = "resources/level_names.txt";
-    sf::Text m_t1,m_t2;
-    std::vector<std::string> levelNames;
-    std::vector<sf::Text> levelTexts;
-    sf::Font m_font;
-    int selectedItemIndex;
+    const string LEVEL_NAMES_SRC = LEVEL_IDS_FILE;
+    Text m_t1,m_t2;
+    vector<LevelConfig> levelsConfig;
+    Font m_font;
+    string selectedLevelId;
 };
-#endif //LEVELSELECTOR_H
+#endif 

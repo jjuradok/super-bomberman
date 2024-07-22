@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <sstream>
 #include "Box.h"
 #include "config/Config.h"
@@ -112,6 +113,15 @@ void Level::update(vector<vector<char>> newMatrix)
 
 void Level::draw(RenderWindow &w)
 {
+  Texture backgroundTexture = levelResources.getBackgroundTexture();
+  Sprite backgroundSprite;
+  backgroundSprite.setTexture(backgroundTexture);
+  Vector2f ImageSize = (Vector2f)backgroundSprite.getTexture()->getSize();
+  float scale = max(w.getSize().x / ImageSize.x, w.getSize().y / ImageSize.y);
+  backgroundSprite.setScale(scale, scale);
+  backgroundSprite.setColor(Color(255, 255, 255, 100));
+  w.draw(backgroundSprite);
+
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
@@ -161,4 +171,9 @@ Vector2f Level::getDimensions() {
 vector<Box *> Level::getLevelBoxes()
 {
   return boxes;
+}
+
+LevelResources Level::getLevelResources()
+{
+  return levelResources;
 }
