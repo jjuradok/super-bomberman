@@ -1,0 +1,4 @@
+cpu;C.P.U
+atlantis;Welcome to Atlantis
+castle;King Arthur's Castle
+factory;Modern Times
