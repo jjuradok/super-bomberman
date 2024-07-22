@@ -6,8 +6,13 @@
 using namespace sf;
 using namespace std;
 
+string getTexturePath(string textureFolderPath, int textureCurrentFrame)
+{
+  return textureFolderPath + to_string(abs(textureCurrentFrame)) + ".png";
+}
+
 Animated::Animated(Vector2f position, string textureFolderPath, int totalFrames): textureFolderPath(textureFolderPath), totalFrames(totalFrames) {
-  string texturePath = textureFolderPath + to_string(textureCurrentFrame) + ".png";
+  string texturePath = getTexturePath(textureFolderPath, textureCurrentFrame);
   texture.loadFromFile(texturePath);
   sprite.setTexture(texture);
   sprite.setPosition(position);
@@ -33,7 +38,8 @@ int Animated::getTextureCurrentFrame(){
   return textureCurrentFrame;
 };
 
-void Animated::update() {
+void Animated::updateAnimation()
+{
   if (textureTime.getElapsedTime().asMilliseconds() >= animationFrameDuration)
   {
     if (shouldIncreaseFrame)
@@ -52,19 +58,26 @@ void Animated::update() {
     {
       shouldIncreaseFrame = true;
     }
-    string texturePath = textureFolderPath + to_string(textureCurrentFrame) + ".png";
+    string texturePath = getTexturePath(textureFolderPath, textureCurrentFrame);
     texture.loadFromFile(texturePath);
     sprite.setTexture(texture);
     textureTime.restart();
   }
-
 }
 void Animated::updateFolder(string textureFolderPath) {
   this->textureFolderPath = textureFolderPath;
-  string texturePath = textureFolderPath + to_string(textureCurrentFrame) + ".png";
+  string texturePath = getTexturePath(textureFolderPath, textureCurrentFrame);
   texture.loadFromFile(texturePath);
   sprite.setTexture(texture);
 }
+
 void Animated::updateTotalFrames(int totalFrames) {
   totalFrames = totalFrames;
+}
+
+void Animated::resetAnimation(int frame)
+{
+  string texturePath = getTexturePath(textureFolderPath, frame);
+  texture.loadFromFile(texturePath);
+  sprite.setTexture(texture);
 }

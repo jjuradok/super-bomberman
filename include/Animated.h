@@ -17,9 +17,10 @@ public:
   Texture &getTexture();
   bool getShouldIncreaseFrame();
   int getTextureCurrentFrame();
-  virtual void update();
+  void updateAnimation();
   void updateFolder(string textureFolderPath);
   void updateTotalFrames(int totalFrames);
+  void resetAnimation(int frame = 1);
 private:
   bool shouldIncreaseFrame = true;
   int textureCurrentFrame = 0, totalFrames;
