@@ -13,8 +13,10 @@ using namespace std;
   string cornerBoxPath = assetsInitialPath + CORNER_BOX_LEVEL_TEXTURE;
   string bottomBorderBoxPath = assetsInitialPath + BOTTOM_BORDER_BOX_LEVEL_TEXTURE;
   string groundPath = assetsInitialPath + GROUND_LEVEL_TEXTURE;
+  string backgroundPath = assetsInitialPath + BACKGROUND_LEVEL_TEXTURE;
 
   groundTexture.loadFromFile(groundPath);
+  backgroundTexture.loadFromFile(backgroundPath);
   destructibleBoxTexture.loadFromFile(destructibleBoxPath);
   indestructibleBoxTexture.loadFromFile(indestructibleBoxPath);
   borderBoxTexture.loadFromFile(borderBoxPath);
@@ -44,4 +46,9 @@ Texture &LevelResources::getBorderBoxTexture()
 Texture &LevelResources::getCornerBoxTexture()
 {
   return cornerBoxTexture;
+}
+
+Texture &LevelResources::getBackgroundTexture()
+{
+  return backgroundTexture;
 }
