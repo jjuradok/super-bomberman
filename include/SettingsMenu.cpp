@@ -5,11 +5,12 @@
 #include "SettingsMenu.h"
 #include "Game.h"
 #include <SFML/Window/Mouse.hpp>
+#include "config/ResourcesLocation.h"
 
 #include "Pause.h"
 class Pause;
 SettingsMenu::SettingsMenu() {
-    font.loadFromFile("assets/fonts/fuentegod.ttf");
+    font.loadFromFile(FONT_FILE);
     resolutions = {
         {1920, 1080},
         {1600, 900},

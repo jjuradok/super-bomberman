@@ -1,7 +1,3 @@
-//
-// Created by Usuario on 7/20/2024.
-//
-
 #include "Pause.h"
 
 #include "LevelSelector.h"
@@ -10,10 +6,11 @@
 #include <iostream>
 
 #include "SettingsMenu.h"
+#include "config/ResourcesLocation.h"
 
 
 Pause::Pause() {
-    if (!m_font.loadFromFile("assets/fonts/fuentegod.ttf")) {
+    if (!m_font.loadFromFile(FONT_FILE)) {
         std::cerr << "Error loading font\n";
         // Manejar error si es necesario
     }

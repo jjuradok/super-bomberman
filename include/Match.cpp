@@ -163,7 +163,7 @@ Match::Match(const string &levelId)
 	  player_2(false, Vector2f(-100, -100)),
 	  lvl_loaded(levelId),
 	  level(levelId),
-	  isPaused(false)  // Inicializa la pausa como falsa
+	  isPaused(false)
 {
 	loadMatrix("resources/levels/" + levelId + ".txt");
 	level.loadMatrix(matrix);
