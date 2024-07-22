@@ -25,5 +25,6 @@ private:
     vector<LevelConfig> levelsConfig;
     Font m_font;
     string selectedLevelId;
+    Clock c_cont;
 };
 #endif 

@@ -58,16 +58,20 @@ LevelSelector::LevelSelector() {
     }
 }
 
-
 void LevelSelector::update(Game &j) {
-
+    vector<Text> levelTexts;
+    for (auto &config : levelsConfig) {
+        levelTexts.push_back(config.levelText);
+    }
+    updateTextColor(levelTexts, j);
+    updateTextColor(m_t2,j);
     if (Mouse::isButtonPressed(Mouse::Left)) {
         Vector2i mousePos = Mouse::getPosition(j.getWindow());
-        if (m_t2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {
+        if (m_t2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
             j.changeScene(new Menu);
         }
         for (auto &config : levelsConfig) {
-            if (config.levelText.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {
+            if (config.levelText.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
                 selectLevel(j, config.id);
             }
         }
@@ -95,3 +99,4 @@ LevelConfig LevelSelector::getLevelConfig(string id) {
     }
     return LevelConfig();
 }
+

@@ -8,6 +8,7 @@ Bomb::Bomb(char playerOrigin) : Animated(Vector2f(0, 0), BOMB_TEXTURE_P1_FOLDER,
 	playerOrigin = playerOrigin;
 	bool isPlayerOne = playerOrigin == PLAYER_ONE_ID;
 	if (!isPlayerOne) this->updateFolder(BOMB_TEXTURE_P2_FOLDER);
+	bombClock.restart();
 }
 
 void Bomb::draw(RenderWindow &w) {
@@ -23,5 +24,21 @@ void Bomb::changePosition(Vector2f newPosition) {
 }
 
 bool Bomb::shouldExplode() {
-	return (bombClock.getElapsedTime().asMilliseconds() >= BOMB_LIFE_TIME);
+	if (isPaused) {
+		return false;
+	}
+	return (bombClock.getElapsedTime().asMilliseconds() >= timeRemaining);
+}
+void Bomb::setPaused(bool paused) {
+	if (paused) {
+		if (!isPaused) {
+			timeRemaining -= bombClock.getElapsedTime().asMilliseconds();
+			isPaused = true;
+		}
+	} else {
+		if (isPaused) {
+			isPaused = false;
+			bombClock.restart();
+		}
+	}
 }

@@ -15,21 +15,20 @@ Menu::Menu() {
     m_t2.setFont(m_font);  m_t2.setString("Select level"); m_t2.setCharacterSize(70); m_t2.setPosition(180,350);
     m_t3.setFont(m_font);  m_t3.setString("Salir"); m_t3.setCharacterSize(70); m_t3.setPosition(1200,350);
     m_t4.setFont(m_font);  m_t4.setString("Jurado-Lui. 2024"); m_t4.setCharacterSize(70); m_t4.setPosition(180,900);
+    m_options.push_back(m_t2); m_options.push_back(m_t3);
 }
 
 void Menu::draw(RenderWindow &w) {
     w.clear({2,4,74});
     w.draw(m_t1);
-    w.draw(m_t2);
-    w.draw(m_t3);
+    for (auto &text:m_options) {
+        w.draw(text);
+    }
     w.draw(m_t4);
 }
 
 void Menu::update(Game &j) {
-
-    updateTextColor(m_t2, j);
-    updateTextColor(m_t3, j);
-
+    updateTextColor(m_options,j);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
         if (m_t2.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
             j.changeScene(new LevelSelector);
@@ -41,12 +40,5 @@ void Menu::update(Game &j) {
     }
 }
 
-void Menu::updateTextColor(sf::Text& text, Game& j) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
-    if (text.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-        text.setFillColor(sf::Color(75,75,75)); // Cambiar el color al pasar el mouse
-    } else {
-        text.setFillColor(sf::Color::White); // Restaurar el color original
-    }
-}
+
 
