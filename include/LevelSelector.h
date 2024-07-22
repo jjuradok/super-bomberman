@@ -25,5 +25,6 @@ private:
     std::vector<sf::Text> levelTexts;
     sf::Font m_font;
     int selectedItemIndex;
+    Clock c_cont;
 };
 #endif //LEVELSELECTOR_H

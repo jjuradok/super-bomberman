@@ -21,8 +21,10 @@ private:
     sf::Font m_font;
     sf::Text m_resume;
     sf::Text m_levelSelect;
+    sf::Text m_settings;
     sf::Text m_exit;
     std::vector<sf::Text> m_options;
+    Clock c_cont;
 };
 
 

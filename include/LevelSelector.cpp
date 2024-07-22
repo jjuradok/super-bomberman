@@ -50,11 +50,11 @@ void LevelSelector::update(Game &j) {
     updateTextColor(m_t2,j);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
-        if (m_t2.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+        if (m_t2.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
             j.changeScene(new Menu);
         }
         for (auto &text : levelTexts) {
-            if (text.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+            if (text.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
                 selectLevel(j,text.getString());
             }
         }

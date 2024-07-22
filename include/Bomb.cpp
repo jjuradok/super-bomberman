@@ -14,6 +14,7 @@ Bomb::Bomb(char playerOrigin) {
 	bombTexture.loadFromFile(bombTexturePath);
 	bombSprite.setTexture(bombTexture);
 	bombSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
+	bombClock.restart();
 }
 
 void Bomb::update ( ) {
@@ -46,8 +47,8 @@ void Bomb::setPaused(bool paused) {
 		}
 	} else {
 		if (isPaused) {
-			bombClock.restart();
 			isPaused = false;
+			bombClock.restart();
 		}
 	}
 }
