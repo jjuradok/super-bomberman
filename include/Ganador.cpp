@@ -24,6 +24,7 @@ Ganador::Ganador(bool player_one,const std::string &lvl_played): m_lvl_played(lv
 	m_mm.setPosition(750, 750);
 	m_mm.setCharacterSize(50);
 	m_mm.setString("Back!");
+	m_options.push_back(m_replay); m_options.push_back(m_mm);
 	if (player_one)
 	{
 		m_text.setString("Player One Wins!");
@@ -37,6 +38,7 @@ Ganador::Ganador(bool player_one,const std::string &lvl_played): m_lvl_played(lv
 }
 
 void Ganador::update(Game &j) {
+	updateTextColor(m_options,j);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 		if (m_replay.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
 			j.changeScene(new Match(this->get_lvl_played()));
@@ -47,11 +49,14 @@ void Ganador::update(Game &j) {
 		}
 	}
 }
+
+
 void Ganador::draw(RenderWindow &w)
 {
 	w.clear(Color(0, 0, 0));
 	w.draw(m_text);
-	w.draw(m_replay);
-	w.draw(m_mm);
+	for (auto &text:m_options) {
+		w.draw(text);
+	}
 }
 

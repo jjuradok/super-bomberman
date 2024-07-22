@@ -10,7 +10,7 @@ Bomb::Bomb(char playerOrigin) {
 	
 	bool isPlayerOne = playerOrigin == PLAYER_ONE_ID;
 	string bombTexturePath = isPlayerOne ? BOMB_TEXTURE : BOMB_PLAYER_TWO_TEXTURE;
-	
+
 	bombTexture.loadFromFile(bombTexturePath);
 	bombSprite.setTexture(bombTexture);
 	bombSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
@@ -33,5 +33,21 @@ void Bomb::changePosition(Vector2f newPosition) {
 }
 
 bool Bomb::shouldExplode() {
-	return (bombClock.getElapsedTime().asMilliseconds() >= BOMB_LIFE_TIME);
+	if (isPaused) {
+		return false;
+	}
+	return (bombClock.getElapsedTime().asMilliseconds() >= timeRemaining);
+}
+void Bomb::setPaused(bool paused) {
+	if (paused) {
+		if (!isPaused) {
+			timeRemaining -= bombClock.getElapsedTime().asMilliseconds();
+			isPaused = true;
+		}
+	} else {
+		if (isPaused) {
+			bombClock.restart();
+			isPaused = false;
+		}
+	}
 }

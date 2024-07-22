@@ -17,6 +17,7 @@ private:
 	std::string m_lvl_played;
 	Font m_font;
 	Text m_text,m_replay,m_mm;
+	std::vector<Text> m_options;
 };
 
 #endif

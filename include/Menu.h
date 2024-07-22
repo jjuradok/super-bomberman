@@ -17,11 +17,10 @@ class Menu : public Scene{
         Menu();
         void update(Game &j) override;
         void draw(RenderWindow &w) override;
-        void updateTextColor(sf::Text& text, Game& j);
     private:
         Font m_font;
-        Text m_t1, m_t2, m_t3, m_t4;
-
+        Text m_t1,m_t2,m_t3, m_t4;
+        std::vector<Text> m_options;
 };
 
 

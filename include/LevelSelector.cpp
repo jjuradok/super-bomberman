@@ -45,9 +45,9 @@ LevelSelector::LevelSelector() {
     }
 }
 
-
 void LevelSelector::update(Game &j) {
-
+    updateTextColor(levelTexts,j);
+    updateTextColor(m_t2,j);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
         if (m_t2.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
@@ -73,3 +73,4 @@ void LevelSelector::draw(sf::RenderWindow &w) {
 void LevelSelector::selectLevel(Game &j, const std::string &lvl_name) {
     j.changeScene(new Match(lvl_name));
 }
+

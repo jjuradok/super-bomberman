@@ -17,6 +17,7 @@
 
 using namespace std;
 
+
 //TODO: refactorizar esta funcion
 vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game)
 {
@@ -128,9 +129,14 @@ string Match::get_lvl_loaded() {
 	return lvl_loaded;
 }
 
-Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), player_2(false, Vector2f(-100, -100)), lvl_loaded(lvl_name), level(lvl_name)
+Match::Match(const string &lvl_name)
+	: player_1(true, Vector2f(-100, -100)),
+	  player_2(false, Vector2f(-100, -100)),
+	  lvl_loaded(lvl_name),
+	  level(lvl_name),
+	  isPaused(false)  // Inicializa la pausa como falsa
 {
-	loadMatrix("resources/levels/"+lvl_name+".txt");
+	loadMatrix("resources/levels/" + lvl_name + ".txt");
 	level.loadMatrix(matrix);
 	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
 	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
@@ -145,37 +151,38 @@ Match::Match(const string &lvl_name) : player_1(true, Vector2f(-100, -100)), pla
 
 
 void Match::update(Game &j) {
-	player_1.update(level);
-	player_2.update(level);
-	float size = TILE_SIZE * SCALE_FACTOR;
+	if (isPaused) {
+		return;
+	}
+		player_1.update(level);
+		player_2.update(level);
+		float size = TILE_SIZE * SCALE_FACTOR;
 
-	for (Bomb *bomb : bombs)
-	{
-		if (bomb->shouldExplode())
-		{
-			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(bomb->getPosition(), level.getDimensions());
-			vector<vector<char>> updatedMatrix = updateMatrixAfterExplosion(bombPositionInMatrix, j);
-			matrix = updatedMatrix;
-			level.update(updatedMatrix);
+		for (Bomb *bomb : bombs) {
+			if (bomb->shouldExplode()) {
+				MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(bomb->getPosition(), level.getDimensions());
+				vector<vector<char>> updatedMatrix = updateMatrixAfterExplosion(bombPositionInMatrix, j);
+				matrix = updatedMatrix;
+				level.update(updatedMatrix);
 
-			removeBomb(bomb);
+				removeBomb(bomb);
+			}
 		}
-	}
-	
-	vector<Player *> playersToShoot;
-	if (player_1.canShoot())
-		playersToShoot.push_back(&player_1);
-	if (player_2.canShoot())
-		playersToShoot.push_back(&player_2);
-		
-	for (Player *player : playersToShoot) {
-		Bomb *shotBomb = player->shoot();
-		Vector2f playerCenterPosition = Vector2f(player->getPosition().x + size / 2, player->getPosition().y + size / 2);
-		MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(playerCenterPosition, level.getDimensions());
-		Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions());
-		shotBomb->changePosition(bombAdjustedPosition);
-		bombs.push_back(shotBomb);
-	}
+
+		vector<Player *> playersToShoot;
+		if (player_1.canShoot())
+			playersToShoot.push_back(&player_1);
+		if (player_2.canShoot())
+			playersToShoot.push_back(&player_2);
+
+		for (Player *player : playersToShoot) {
+			Bomb *shotBomb = player->shoot();
+			Vector2f playerCenterPosition = Vector2f(player->getPosition().x + size / 2, player->getPosition().y + size / 2);
+			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(playerCenterPosition, level.getDimensions());
+			Vector2f bombAdjustedPosition = parseMatrixPositionIntoPixels(bombPositionInMatrix, level.getDimensions());
+			shotBomb->changePosition(bombAdjustedPosition);
+			bombs.push_back(shotBomb);
+		}
 }
 
 void Match::removeBomb(Bomb *bomb) {
@@ -218,4 +225,15 @@ void Match::loadMatrix(string fileName)
 	file.close();
 
 }
+bool Match::isMatchPaused() {
+	return isPaused;
+}
+void Match::setPaused(bool paused) {
+	isPaused = paused;
+	for (Bomb* bomb : bombs) {
+		bomb->setPaused(paused);
+	}
+}
+
+
 

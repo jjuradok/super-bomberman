@@ -14,6 +14,7 @@ public:
 	void update();
 	void draw(RenderWindow &w);
 	void changePosition(Vector2f newPosition);
+	void setPaused(bool paused);
 	bool shouldExplode();
 	Vector2f getPosition();
 private:
@@ -22,6 +23,8 @@ private:
 	Sprite bombSprite;
 	Vector2f mVel;
 	Clock bombClock;
+	float timeRemaining = 3000.0f;
+	bool isPaused;
 };
 
 #endif
