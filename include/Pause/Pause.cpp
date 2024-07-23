@@ -1,0 +1,76 @@
+#include "Pause.h"
+#include "../LevelSelector/LevelSelector.h"
+#include <iostream>
+#include "../SettingsMenu/SettingsMenu.h"
+#include "../config/ResourcesLocation.h"
+#include "../utils/Details.h"
+
+
+Pause::Pause() {
+    m_font.loadFromFile(FONT_FILE);
+    m_resume.setFont(m_font);
+    m_resume.setString("Reanudar");
+    m_resume.setCharacterSize(30);
+    m_resume.setFillColor(sf::Color::White);
+    m_resume.setPosition(100, 100);
+
+    m_levelSelect.setFont(m_font);
+    m_levelSelect.setString("Seleccionar nivel");
+    m_levelSelect.setCharacterSize(30);
+    m_levelSelect.setFillColor(sf::Color::White);
+    m_levelSelect.setPosition(100, 150);
+
+    m_exit.setFont(m_font);
+    m_exit.setString("Salir");
+    m_exit.setCharacterSize(30);
+    m_exit.setFillColor(sf::Color::White);
+    m_exit.setPosition(100, 200);
+
+    m_settings.setFont(m_font);
+    m_settings.setString("Settings");
+    m_settings.setCharacterSize(30);
+    m_settings.setFillColor(sf::Color::White);
+    m_settings.setPosition(100, 250);
+
+
+    m_options.push_back(m_resume);
+    m_options.push_back(m_levelSelect);
+    m_options.push_back(m_exit);
+    m_options.push_back(m_settings);
+}
+
+void Pause::update(Game& j) {
+
+    for(auto & text: m_options) {
+        Details::updateTextColor(text,j);
+    }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
+
+        if (m_resume.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+            std::cout << "Resuming game" << std::endl;
+            // Reanudar el juego
+            j.changeScene(j.getPreviousScene());
+        } else if (m_levelSelect.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+            std::cout << "Selecting level" << std::endl;
+            j.changeScene(new LevelSelector());
+        } else if (m_exit.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+            std::cout << "Exiting game" << std::endl;
+            // Salir del juego
+            j.getWindow().close();
+        } else if (m_settings.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+            std::cout << "Exiting game" << std::endl;
+        // Salir del juego
+            j.changeScene(new SettingsMenu);
+    }
+    }
+}
+
+void Pause::draw(sf::RenderWindow& w) {
+    w.clear();
+    for (auto& text : m_options) {
+        w.draw(text);
+    }
+}
+
+
