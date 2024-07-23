@@ -25,11 +25,12 @@ class Match : public Scene
 	void removeBomb(Bomb *bomb);
 	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
 	string lvl_loaded;
-	bool isPaused;
+	bool isPaused, isMatchEnded = false;
 
 public:
 	Match(const string &levelId);
 	string getLevelId();
+	void handleMatchMusic();
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
 	void setPaused(bool paused);
