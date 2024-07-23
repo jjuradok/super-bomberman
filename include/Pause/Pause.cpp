@@ -32,12 +32,6 @@ Pause::Pause()
     exitText.setFillColor(Color::White);
     exitText.setPosition(100, 200);
 
-    settingsText.setFont(font);
-    settingsText.setString("Settings");
-    settingsText.setCharacterSize(30);
-    settingsText.setFillColor(Color::White);
-    settingsText.setPosition(100, 250);
-
     options.push_back(resumeText);
     options.push_back(levelSelectText);
     options.push_back(exitText);
@@ -70,11 +64,6 @@ void Pause::update(Game &j)
         {
             j.changeScene(new SettingsMenu);
         }
-    }
-
-    if (Keyboard::isKeyPressed(Keyboard::Escape) && counter.getElapsedTime().asMilliseconds() >= 250)
-    {
-        j.changeScene(j.getPreviousScene());
     }
 }
 
