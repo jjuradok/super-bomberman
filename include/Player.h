@@ -12,19 +12,20 @@ class Player: public Animated
 {
 	bool isPlayerOne;
 public:
-	Player(bool isPlayerOne, Vector2f position);
-	void update(Level &level);
-	void draw(RenderWindow &w);
-	bool canShoot();
+	Player(bool isPlayerOne, Vector2f position, Clock &matchTime);
 	Bomb *shoot();
 	Vector2f getPosition();
-	bool checkCollision(vector <FloatRect> boundings, Vector2f movement);
-	FloatRect getCollisionBounds();
 	Vector2f getDimensions();
+	FloatRect getCollisionBounds();
+	bool canShoot();
+	bool getIsPlayerOne();
+	bool checkCollision(vector<FloatRect> boundings, Vector2f movement);
 	void changePosition(Vector2f newPosition);
-	bool getIsPlayerOne();	
-
+	void draw(RenderWindow &w);
+	void update(Level &level);
 private:
+	Clock &matchTime;
+	bool isFirstShoot = true;
 	Keyboard::Key m_right, m_left, m_up, m_down, m_shoot;
 	Clock m_clock;
 };

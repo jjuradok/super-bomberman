@@ -10,7 +10,7 @@
 using namespace std;
 using namespace sf;
 
-Player::Player(bool isPlayerOne, Vector2f position) : Animated(position, P1_TEXTURE_DOWN_FOLDER, PLAYER_ANIMATION_FRAMES), isPlayerOne(isPlayerOne)
+Player::Player(bool isPlayerOne, Vector2f position, Clock &matchTime) : Animated(position, P1_TEXTURE_DOWN_FOLDER, PLAYER_ANIMATION_FRAMES), isPlayerOne(isPlayerOne), matchTime(matchTime)
 {
 	this->resetAnimation(PLAYER_TEXTURE_DOWN_DEFAULT_FRAME);
 	if (!isPlayerOne) updateFolder(P2_TEXTURE_DOWN_FOLDER);
@@ -64,62 +64,6 @@ bool Player::checkCollision(vector<FloatRect> boundings, Vector2f movement)
 	return false;
 }
 
-// void Player::update(Level &level)
-// {
-// 	Vector2f movement(0.f, 0.f);
-// 	vector<FloatRect> boxesBoundings = getBoundingsFromEntities(level.getLevelBoxes());
-// 	bool isMoving = false;
-// 	if (Keyboard::isKeyPressed(m_right))
-// 	{
-// 		movement.x += PLAYER_SPEED;
-// 		if (!checkCollision(boxesBoundings, movement)){
-// 				isMoving = true;
-// 				this->updateFolder(playerTextureFolder(isPlayerOne, RIGHT));
-// 				this->getSprite().move(movement.x, 0);
-// 			} else {
-// 				this->resetAnimation(PLAYER_TEXTURE_RIGHT_DEFAULT_FRAME);
-// 		}
-// 			movement.x = 0;
-// 	}
-// 	if (Keyboard::isKeyPressed(m_left))
-// 	{
-// 		movement.x -= PLAYER_SPEED;
-// 		if (!checkCollision(boxesBoundings, movement)) {
-// 			isMoving = true;
-// 			this->updateFolder(playerTextureFolder(isPlayerOne, LEFT));
-// 			this->getSprite().move(movement.x, 0);
-// 		} else {
-// 			this->resetAnimation(PLAYER_TEXTURE_LEFT_DEFAULT_FRAME);
-// 		}
-// 		movement.x = 0;
-// 	}
-// 	if (Keyboard::isKeyPressed(m_up))
-// 	{
-// 		movement.y -= PLAYER_SPEED;
-// 		if (!checkCollision(boxesBoundings, movement)) {
-// 			isMoving = true;
-// 			this->updateFolder(playerTextureFolder(isPlayerOne, UP));
-// 			this->getSprite().move(0, movement.y);
-// 		} else {
-// 			this->resetAnimation(PLAYER_TEXTURE_UP_DEFAULT_FRAME);
-// 		}
-// 		movement.y = 0;
-// 	}
-// 	if (Keyboard::isKeyPressed(m_down))
-// 	{
-// 		movement.y += PLAYER_SPEED;
-// 		if (!checkCollision(boxesBoundings, movement)) {
-// 			isMoving = true;
-// 			this->updateFolder(playerTextureFolder(isPlayerOne, DOWN));
-// 			this->getSprite().move(0, movement.y);
-// 		} else {
-// 			this->resetAnimation(PLAYER_TEXTURE_DOWN_DEFAULT_FRAME);
-// 		}
-// 		movement.y = 0;
-// 	}
-// 	if (isMoving) updateAnimation();
-// }
-
 void Player::update(Level &level)
 {
 	Vector2f movement(0.f, 0.f);
@@ -162,7 +106,7 @@ void Player::draw(RenderWindow &w)
 
 bool Player::canShoot()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME)
+	if (m_clock.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME && !isFirstShoot)
 		return false;
 	if (!Keyboard::isKeyPressed(m_shoot))
 		return false;
@@ -172,6 +116,10 @@ bool Player::canShoot()
 
 Bomb *Player::shoot()
 {
+	if (matchTime.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME)
+	{
+		isFirstShoot = false;
+	}
 	char playerOrigin = isPlayerOne ? PLAYER_ONE_ID : PLAYER_TWO_ID;
 	Bomb bomb(playerOrigin);
 	return new Bomb(playerOrigin);
