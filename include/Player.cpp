@@ -116,10 +116,7 @@ bool Player::canShoot()
 
 Bomb *Player::shoot()
 {
-	if (matchTime.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME)
-	{
-		isFirstShoot = false;
-	}
+	isFirstShoot = false;
 	char playerOrigin = isPlayerOne ? PLAYER_ONE_ID : PLAYER_TWO_ID;
 	Bomb bomb(playerOrigin);
 	return new Bomb(playerOrigin);
