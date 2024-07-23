@@ -4,13 +4,15 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include "SFML/Audio/SoundSource.hpp"
+
 #include "Box.h"
 #include "config/Config.h"
 #include "config/Constants.h"
 #include "utils/Vector.h"
+#include "utils/Vector.h"
 #include "ScreenPosition.h"
 #include "LevelResources.h"
-#include "SFML/Audio/SoundSource.hpp"
 
 using namespace std;
 using namespace sf;
@@ -43,8 +45,8 @@ Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 {
   int i = position.i;
   int j = position.j;
-  bool isDestructible = matrix[i][j] == DESTRUCTIBLE;
-  bool isBorder = matrix[i][j] == BORDER;
+  bool isDestructible = matrix[i][j] == DESTRUCTIBLE_TILE;
+  bool isBorder = includes(BORDER_TILES, matrix[i][j]);
 
   int boxSize = TILE_SIZE * SCALE_FACTOR;
   Vector2f boxPosition(j * boxSize, i * boxSize);
@@ -54,38 +56,49 @@ Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 
   if (isBorder)
   {
-    bool isCorner = (i == 0 && j == 0) || (i == 0 && j == columns - 1) || (i == rows - 1 && j == 0) || (i == rows - 1 && j == columns - 1);
+    bool isCorner = (i == 0 && j == 0) || (i == 0 && j == columns - 1) || (i == rows - 1 && j == 0) || (i == rows - 1 && j == columns - 1) || includes(CORNER_TILES, matrix[i][j]);
+
     bool isRightBorder = j == columns - 1;
     bool isTopBorder = i == 0;
     bool isBottomBorder = i == rows - 1;
+
+    bool isTopLeftCorner = matrix[i][j] == CORNER_TOP_LEFT;
+    bool isTopRightCorner = matrix[i][j] == CORNER_TOP_RIGHT;
+    bool isBottomLeftCorner = matrix[i][j] == CORNER_BOTTOM_LEFT;
+    bool isBottomRightCorner = matrix[i][j] == CORNER_BOTTOM_RIGHT;
+    bool isBorderTop = matrix[i][j] == BORDER_TOP;
+    bool isBorderBottom = matrix[i][j] == BORDER_BOTTOM;
+    bool isBorderRight = matrix[i][j] == BORDER_RIGHT;
+
     Texture boxTexture = isCorner ? levelResources.getCornerBoxTexture() : levelResources.getBorderBoxTexture();
     delete box;
     box = new Box(boxTexture, pos);
-    if (isRightBorder && !isCorner)
+    if ((isRightBorder && !isCorner) || isBorderRight)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
     }
-    if (isTopBorder && !isCorner)
+    if ((isTopBorder && !isCorner) || isBorderTop)
     {
       box->setRotation(90);
     }
-    if (isBottomBorder && !isCorner)
+    if ((isBottomBorder && !isCorner) || isBorderBottom)
     {
       box->setRotation(-90);
     }
-    if (isCorner && isRightBorder && isTopBorder)
+    if ((isCorner && isRightBorder && isTopBorder) || isTopRightCorner)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
       box->setRotation(-90);
     }
-    if (isCorner && isRightBorder && isBottomBorder)
+    if ((isCorner && isRightBorder && isBottomBorder) || isBottomRightCorner)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
     }
-    if (isCorner && !isRightBorder && isTopBorder)
+    if ((isCorner && !isRightBorder && isTopBorder) || isTopLeftCorner)
     {
       box->setRotation(90);
     }
+    
   }
   return box;
 }
