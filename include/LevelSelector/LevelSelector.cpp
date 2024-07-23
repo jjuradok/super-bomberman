@@ -67,11 +67,12 @@ void LevelSelector::update(Game &j) {
     Details::updateTextColor(m_t2,j);
     if (Mouse::isButtonPressed(Mouse::Left)) {
         Vector2i mousePos = Mouse::getPosition(j.getWindow());
-        if (m_t2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+        if (m_t2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && counter.getElapsedTime().asMilliseconds() >= 250) {
             j.changeScene(new Menu);
         }
         for (auto &config : levelsConfig) {
-            if (config.levelText.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
+            if (config.levelText.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y)) && counter.getElapsedTime().asMilliseconds() >= 250)
+            {
                 selectLevel(j, config.id);
             }
         }

@@ -21,7 +21,6 @@ private:
     Text settingsText;
     Text exitText;
     vector<Text> options;
-    Clock counter;
 };
 
 
