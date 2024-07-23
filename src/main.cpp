@@ -1,7 +1,7 @@
-#include "../include/Game.h"
-#include "../include/Match.h"
+#include "../include/Game/Game.h"
+#include "../include/Match/Match.h"
 #include <iostream>
-#include "../include/Menu.h"
+#include "../include/Menu/Menu.h"
 
 int main(int argc, char *argv[])
 {
