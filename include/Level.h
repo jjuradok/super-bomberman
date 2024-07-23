@@ -32,7 +32,8 @@ public:
   void loadLevel(const string &lvl_name);
   void draw(RenderWindow &w);
   void update(vector<vector<char>> matrix);
-  LevelResources getLevelResources();
+  LevelResources *getLevelResources();
+  ~Level();
 };
 
 #endif // LEVEL_H

@@ -14,7 +14,7 @@ class Box {
   Sprite m_spr;
   bool isDestructible;
   public:
-    Box(bool isDestructible, Vector2f position, LevelResources levelResources);
+    Box(bool isDestructible, Vector2f position, LevelResources *levelResources);
     Box(Texture &texture, Vector2f position);
     bool getIsDestructible();
     void update();
