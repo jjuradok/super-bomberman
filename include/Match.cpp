@@ -45,8 +45,8 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				isMatchEnded = true;
-				game.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
+
+				handleEndMatch(game, player);
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -74,8 +74,8 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				isMatchEnded = true;
-				game.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
+
+				handleEndMatch(game, player);
 			}
 		}
 		if (bombRow[j] == SOLID_TILE)
@@ -103,8 +103,8 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				isMatchEnded = true;
-				game.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
+
+				handleEndMatch(game, player);
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -132,8 +132,8 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 			playerPosition = parsePixelsIntoMatrixPosition(player->getPosition(), level.getDimensions(), player->getDimensions());
 			if (playerPosition == explosionPosition)
 			{
-				isMatchEnded = true;
-				game.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
+
+				handleEndMatch(game, player);
 			}
 		}
 		if (bombColumn[i] == SOLID_TILE)
@@ -158,6 +158,12 @@ vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPositi
 		updatedMatrix[i][bombPosition.j] = bombColumn[i];
 	}
 	return updatedMatrix;
+}
+
+void Match::handleEndMatch(Game &game, Player *winner)
+{
+	handleMatchMusic(true);
+	game.changeScene(new Ganador(!winner->getIsPlayerOne(), this->getLevelId()));
 }
 
 string Match::getLevelId()
@@ -185,24 +191,24 @@ Match::Match(const string &levelId)
 	player_2.changePosition(player2PositionPixels);
 }
 
-void Match::handleMatchMusic()
+void Match::handleMatchMusic(bool stop)
 {
 	SoundSource::Status musicStatus = level.getLevelResources()->getBackgroundMusic()->getStatus();
-	if (isMatchEnded)
+	if (stop)
 	{
 		level.getLevelResources()->getBackgroundMusic()->stop();
+		return;
 	}
-	else
+	if (isPaused)
 	{
-		if (isPaused)
-		{
-			level.getLevelResources()->getBackgroundMusic()->pause();
-			SoundSource::Status musicStatus = level.getLevelResources()->getBackgroundMusic()->getStatus();
-		}
-		else if (musicStatus == SoundSource::Status::Paused)
-		{
-			level.getLevelResources()->getBackgroundMusic()->play();
-		}
+		level.getLevelResources()->getBackgroundMusic()->pause();
+		SoundSource::Status musicStatus = level.getLevelResources()->getBackgroundMusic()->getStatus();
+		return;
+	}
+	if (musicStatus == SoundSource::Status::Paused)
+	{
+		level.getLevelResources()->getBackgroundMusic()->play();
+		return;
 	}
 }
 
@@ -227,7 +233,7 @@ void Match::update(Game &j)
 			explosion->updateAnimation();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
-				isMatchEnded = true;
+
 				j.changeScene(new Ganador(!player->getIsPlayerOne(), this->getLevelId()));
 			}
 		}
