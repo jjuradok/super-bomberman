@@ -13,7 +13,7 @@ Menu::Menu() {
     m_font.loadFromFile(FONT_FILE);
     m_t1.setFont(m_font);  m_t1.setString("Bombita"); m_t1.setCharacterSize(150); m_t1.setPosition(180,80);
     m_t2.setFont(m_font);  m_t2.setString("Select level"); m_t2.setCharacterSize(70); m_t2.setPosition(180,350);
-    m_t3.setFont(m_font);  m_t3.setString("Salir"); m_t3.setCharacterSize(70); m_t3.setPosition(1200,350);
+    m_t3.setFont(m_font);  m_t3.setString("Exit"); m_t3.setCharacterSize(70); m_t3.setPosition(1200,350);
     m_t4.setFont(m_font);  m_t4.setString("Jurado-Lui. 2024"); m_t4.setCharacterSize(70); m_t4.setPosition(180,900);
     m_options.push_back(m_t2); m_options.push_back(m_t3);
 }

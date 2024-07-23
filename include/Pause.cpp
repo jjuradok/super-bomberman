@@ -16,19 +16,19 @@ Pause::Pause() {
     }
 
     m_resume.setFont(m_font);
-    m_resume.setString("Reanudar");
+    m_resume.setString("Resume");
     m_resume.setCharacterSize(30);
     m_resume.setFillColor(sf::Color::White);
     m_resume.setPosition(100, 100);
 
     m_levelSelect.setFont(m_font);
-    m_levelSelect.setString("Seleccionar nivel");
+    m_levelSelect.setString("Select level");
     m_levelSelect.setCharacterSize(30);
     m_levelSelect.setFillColor(sf::Color::White);
     m_levelSelect.setPosition(100, 150);
 
     m_exit.setFont(m_font);
-    m_exit.setString("Salir");
+    m_exit.setString("Exit");
     m_exit.setCharacterSize(30);
     m_exit.setFillColor(sf::Color::White);
     m_exit.setPosition(100, 200);
