@@ -4,10 +4,18 @@
 
 #ifndef DETAILS_H
 #define DETAILS_H
+#include <vector>
+#include <SFML/Graphics/Text.hpp>
+
+#include "LevelConfig.h"
+class Game;
+using namespace std;
 class Details {
 public:
     Details(Game &j);
-    void updateTextColor(sf::Text& text, Game& j);
+    static void updateTextColor(vector<LevelConfig> &levelsConfig, Game &j);
+    static void updateTextColor(vector<Text> &v_text, Game &j);
+    static void updateTextColor(Text &text, Game &j);
 private:
 
 };
