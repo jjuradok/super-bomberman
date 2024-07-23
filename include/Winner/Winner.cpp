@@ -6,7 +6,7 @@
 #include "../Menu/Menu.h"
 #include "../utils/Details.h"
 
-std::string Winner::get_lvl_played() {
+std::string Winner::getLevelPlayed() {
 	return m_lvl_played;
 }
 
@@ -42,7 +42,7 @@ void Winner::update(Game &j) {
 	Details::updateTextColor(m_options,j);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 		if (m_replay.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
-			j.changeScene(new Match(this->get_lvl_played()));
+			j.changeScene(new Match(this->getLevelPlayed()));
 		}
 
 		if (m_mm.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {

@@ -12,7 +12,7 @@ public:
 	Winner(bool player_one,const std::string &lvl_played);
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
-	std::string get_lvl_played();
+	std::string getLevelPlayed();
 private:
 	std::string m_lvl_played;
 	Font m_font;
