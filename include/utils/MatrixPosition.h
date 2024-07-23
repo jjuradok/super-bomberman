@@ -6,6 +6,9 @@ struct MatrixPosition
   int i, j;
 };
 
+extern const MatrixPosition INVALID_MATRIX_POSITION;
+
 bool operator==(const MatrixPosition &a, const MatrixPosition &b);
+bool operator!=(const MatrixPosition &a, const MatrixPosition &b);
 
 #endif

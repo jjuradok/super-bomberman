@@ -12,9 +12,9 @@ public:
 	virtual void update(Game &j) = 0;
 	virtual void draw(RenderWindow &) = 0;
 	void updateTextColor(vector<LevelConfig> &levelsConfig, Game &j);
-	void updateTextColor(std::vector<sf::Text> &text, Game &j);
+	void updateTextColor(std::vector<Text> &text, Game &j);
 	void updateTextColor(Text &text, Game &j);
-	~Scene()=default;
+	virtual ~Scene()=default;
 };
 
 #endif

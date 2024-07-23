@@ -153,6 +153,7 @@ MatrixPosition Level::findPosition(char tile)
       }
     }
   }
+  return INVALID_MATRIX_POSITION;
 }
 
 Vector2f Level::getDimensions() {
