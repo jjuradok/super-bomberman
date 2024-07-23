@@ -56,7 +56,6 @@ void Pause::updateTextColor(Text &text, Game &j)
 }
 void Pause::update(Game &j)
 {
-
     for (auto &text : options)
     {
         updateTextColor(text, j);

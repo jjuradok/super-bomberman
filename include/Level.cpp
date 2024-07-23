@@ -176,4 +176,8 @@ LevelResources *Level::getLevelResources()
 Level::~Level()
 {
   levelResources.getBackgroundMusic()->stop();
+  for (auto &box : boxes)
+  {
+    delete box;
+  }
 }

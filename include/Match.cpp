@@ -215,11 +215,7 @@ void Match::handleMatchMusic(bool stop)
 void Match::update(Game &j)
 {
 	handleMatchMusic();
-	if (isPaused)
-	{
-		return;
-	}
-
+	if (isPaused) return;
 	player_1.update(level);
 	player_2.update(level);
 	float size = TILE_SIZE * SCALE_FACTOR;
@@ -284,17 +280,17 @@ void Match::draw(RenderWindow &w)
 	player_2.draw(w);
 	for (Bomb *d : bombs)
 		d->draw(w);
-	for (auto it = explosions.begin(); it != explosions.end();)
+	for (auto explosion = explosions.begin(); explosion != explosions.end();)
 	{
-		(*it)->draw(w);
-		if ((*it)->shouldRemove())
+		(*explosion)->draw(w);
+		if ((*explosion)->shouldRemove())
 		{
-			delete *it;
-			it = explosions.erase(it);
+			delete *explosion;
+			explosion = explosions.erase(explosion);
 		}
 		else
 		{
-			++it;
+			++explosion;
 		}
 	}
 }
