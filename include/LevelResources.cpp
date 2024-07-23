@@ -9,21 +9,27 @@
 
 using namespace std;
 
+string getAssetPath(string levelId, string assetName)
+{
+  return levelAssetsFolder(levelId) + assetName;
+}
+
 LevelResources::LevelResources(string levelId) : levelId(levelId)
 {
-  string assetsInitialPath = levelAssetsFolder(levelId);
-  string destructibleBoxPath = assetsInitialPath + DESTRUCTIBLE_BOX_LEVEL_TEXTURE;
-  string indestructibleBoxPath = assetsInitialPath + INDESTRUCTIBLE_BOX_LEVEL_TEXTURE;
-  string borderBoxPath = assetsInitialPath + BORDER_BOX_LEVEL_TEXTURE;
-  string cornerBoxPath = assetsInitialPath + CORNER_BOX_LEVEL_TEXTURE;
-  string bottomBorderBoxPath = assetsInitialPath + BOTTOM_BORDER_BOX_LEVEL_TEXTURE;
-  string groundPath = assetsInitialPath + GROUND_LEVEL_TEXTURE;
-
+  string destructibleBoxPath = getAssetPath(levelId,DESTRUCTIBLE_BOX_LEVEL_TEXTURE);
+  string indestructibleBoxPath = getAssetPath(levelId,INDESTRUCTIBLE_BOX_LEVEL_TEXTURE);
+  string borderBoxPath = getAssetPath(levelId,BORDER_BOX_LEVEL_TEXTURE);
+  string cornerBoxPath = getAssetPath(levelId,CORNER_BOX_LEVEL_TEXTURE);
+  string bottomBorderBoxPath = getAssetPath(levelId,BOTTOM_BORDER_BOX_LEVEL_TEXTURE);
+  string groundPath = getAssetPath(levelId,GROUND_LEVEL_TEXTURE);
+  
   groundTexture.loadFromFile(groundPath);
   destructibleBoxTexture.loadFromFile(destructibleBoxPath);
   indestructibleBoxTexture.loadFromFile(indestructibleBoxPath);
   borderBoxTexture.loadFromFile(borderBoxPath);
   cornerBoxTexture.loadFromFile(cornerBoxPath);
+  backgroundMusic.setLoop(true);
+  backgroundMusic.openFromFile(getAssetPath(levelId,LEVEL_BACKGROUND_MUSIC));
 
   groundSprite.setTexture(groundTexture);
   groundSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
@@ -102,4 +108,13 @@ Sprite &LevelResources::getGroundSprite()
 Color LevelResources::getBackgroundColor()
 {
   return backgroundColor;
+}
+
+Music *LevelResources::getBackgroundMusic()
+{
+  return &backgroundMusic;
+}
+
+LevelResources::~LevelResources() {
+  backgroundMusic.stop();
 }

@@ -39,7 +39,7 @@ LevelSelector::LevelSelector() {
         }
         file.close();
     m_t1.setFont(m_font);  m_t1.setString("Select Level"); m_t1.setCharacterSize(100); m_t1.setPosition(180,80);
-    m_t2.setFont(m_font);  m_t2.setString("Volver"); m_t2.setCharacterSize(80); m_t2.setPosition(1600,900);
+    m_t2.setFont(m_font);  m_t2.setString("Back"); m_t2.setCharacterSize(80); m_t2.setPosition(1600,900);
 
     int xPosLeft = 180;
     int yPos = 320;

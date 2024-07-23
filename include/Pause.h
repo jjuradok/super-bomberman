@@ -1,7 +1,3 @@
-//
-// Created by Usuario on 7/20/2024.
-//
-
 #ifndef PAUSE_H
 #define PAUSE_H
 
@@ -11,20 +7,22 @@
 #include "Scene.h"
 #include "Game.h"
 
+using namespace sf;
+using namespace std;
 class Pause : public Scene {
 public:
     Pause();
     void update(Game& j) override;
-    void draw(sf::RenderWindow& w) override;
-    void updateTextColor(sf::Text& text, Game& j);
+    void draw(RenderWindow& w) override;
+    void updateTextColor(Text& text, Game& j);
 private:
-    sf::Font m_font;
-    sf::Text m_resume;
-    sf::Text m_levelSelect;
-    sf::Text m_settings;
-    sf::Text m_exit;
-    std::vector<sf::Text> m_options;
-    Clock c_cont;
+    Font font;
+    Text resumeText;
+    Text levelSelectText;
+    Text settingsText;
+    Text exitText;
+    vector<Text> options;
+    Clock counter;
 };
 
 

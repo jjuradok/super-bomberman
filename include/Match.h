@@ -23,6 +23,7 @@ class Match : public Scene
 	vector<Explosion*> explosions;
 	void loadMatrix(string fileName);
 	void removeBomb(Bomb *bomb);
+	void handleEndMatch(Game &game, Player *winner);
 	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
 	string lvl_loaded;
 	bool isPaused;
@@ -30,6 +31,7 @@ class Match : public Scene
 public:
 	Match(const string &levelId);
 	string getLevelId();
+	void handleMatchMusic(bool stop = false);
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
 	void setPaused(bool paused);

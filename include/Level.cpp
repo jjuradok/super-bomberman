@@ -10,6 +10,7 @@
 #include "utils/Vector.h"
 #include "ScreenPosition.h"
 #include "LevelResources.h"
+#include "SFML/Audio/SoundSource.hpp"
 
 using namespace std;
 using namespace sf;
@@ -34,7 +35,9 @@ void Level::loadMatrix(vector<vector<char>> matrix) {
   update(matrix);
 }
 
-Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name){};
+Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name){
+  levelResources.getBackgroundMusic()->play();
+};
 
 Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 {
@@ -47,7 +50,7 @@ Box *Level::handleCreateBox(MatrixPosition position, string levelId)
   Vector2f boxPosition(j * boxSize, i * boxSize);
   Vector2f positionCentered = getPositionCenteredIntoLevel(boxPosition, this->getDimensions(), Vector2f(boxSize, boxSize));
   Vector2f pos = Vector2f(positionCentered.x + boxSize / 2, positionCentered.y + boxSize / 2);
-  Box *box = new Box(isDestructible, pos, levelId);
+  Box *box = new Box(isDestructible, pos, &levelResources);
 
   if (isBorder)
   {
@@ -86,6 +89,7 @@ Box *Level::handleCreateBox(MatrixPosition position, string levelId)
   }
   return box;
 }
+
 
 void Level::update(vector<vector<char>> newMatrix)
 {
@@ -163,7 +167,12 @@ vector<Box *> Level::getLevelBoxes()
   return boxes;
 }
 
-LevelResources Level::getLevelResources()
+LevelResources *Level::getLevelResources()
 {
-  return levelResources;
+  return &levelResources;
+}
+
+Level::~Level()
+{
+  levelResources.getBackgroundMusic()->stop();
 }

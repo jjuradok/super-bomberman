@@ -9,9 +9,9 @@
 using namespace std;
 using namespace sf;
 
-Box::Box(bool isDestructible, Vector2f position, LevelResources levelResources) : isDestructible(isDestructible), position(position)
+Box::Box(bool isDestructible, Vector2f position, LevelResources *levelResources) : isDestructible(isDestructible), position(position)
 {
-  m_tex = isDestructible ? levelResources.getDestructibleBoxTexture() : levelResources.getIndestructibleBoxTexture();
+  m_tex = isDestructible ? levelResources->getDestructibleBoxTexture() : levelResources->getIndestructibleBoxTexture();
   m_spr.setTexture(m_tex);
   m_spr.setScale(SCALE_FACTOR, SCALE_FACTOR);
   m_spr.setPosition(position);

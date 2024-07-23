@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 using namespace std;
 using namespace sf;
 
@@ -11,7 +13,7 @@ class LevelResources {
   Texture groundTexture,backgroundTexture ,destructibleBoxTexture, indestructibleBoxTexture, borderBoxTexture, cornerBoxTexture;
   Sprite groundSprite;
   Color backgroundColor;
-
+  Music backgroundMusic;
 public:
   LevelResources(string levelId);
   Color getBackgroundColor();
@@ -22,6 +24,8 @@ public:
   Texture& getCornerBoxTexture();
   Texture& getBackgroundTexture();
   Sprite& getGroundSprite();
+  Music* getBackgroundMusic();
+  ~LevelResources();
 };
 
 #endif
