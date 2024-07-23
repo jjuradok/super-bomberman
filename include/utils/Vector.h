@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 #include <vector>
 using namespace std;
 
@@ -11,3 +14,5 @@ bool includes(vector<T> v, T value) {
   }
   return false;
 }
+
+#endif
