@@ -187,8 +187,8 @@ Match::Match(const string &levelId)
 	Vector2f player1PositionPixels = getPositionCenteredIntoLevel(Vector2f(player1Position.j * size + 4, player1Position.i * size), level.getDimensions(), player_1.getDimensions());
 	Vector2f player2PositionPixels = getPositionCenteredIntoLevel(Vector2f(player2Position.j * size + 4, player2Position.i * size), level.getDimensions(), player_2.getDimensions());
 
-	player_1.changePosition(player1PositionPixels);
-	player_2.changePosition(player2PositionPixels);
+	if (player1Position != INVALID_MATRIX_POSITION) player_1.changePosition(player1PositionPixels);
+	if (player2Position != INVALID_MATRIX_POSITION) player_2.changePosition(player2PositionPixels);
 }
 
 void Match::handleMatchMusic(bool stop)
