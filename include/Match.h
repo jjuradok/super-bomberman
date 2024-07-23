@@ -29,11 +29,11 @@ class Match : public Scene
 	void loadMatrix(string fileName);
 	void removeBomb(Bomb *bomb);
 	void handleEndMatch(Game &game, Player *winner);
-
 public:
 	Match(const string &levelId);
 	string getLevelId();
 	bool isMatchPaused();
+	bool withinBounds(int i, int j, int rows, int columns);
 	void handleMatchMusic(bool stop = false);
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;

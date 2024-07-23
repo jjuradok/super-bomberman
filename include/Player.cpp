@@ -106,7 +106,7 @@ void Player::draw(RenderWindow &w)
 
 bool Player::canShoot()
 {
-	if (m_clock.getElapsedTime().asMilliseconds() < BOMB_LIFE_TIME && !isFirstShoot)
+	if (m_clock.getElapsedTime().asMilliseconds() < BOMB_COOLDOWN && !isFirstShoot)
 		return false;
 	if (!Keyboard::isKeyPressed(m_shoot))
 		return false;
