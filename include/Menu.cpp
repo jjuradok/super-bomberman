@@ -9,36 +9,43 @@
 #include "LevelSelector.h"
 
 using namespace sf;
+
+
 Menu::Menu() {
-    m_font.loadFromFile(FONT_FILE);
-    m_t1.setFont(m_font);  m_t1.setString("Bombita"); m_t1.setCharacterSize(150); m_t1.setPosition(180,80);
-    m_t2.setFont(m_font);  m_t2.setString("Select level"); m_t2.setCharacterSize(70); m_t2.setPosition(180,350);
-    m_t3.setFont(m_font);  m_t3.setString("Exit"); m_t3.setCharacterSize(70); m_t3.setPosition(1200,350);
-    m_t4.setFont(m_font);  m_t4.setString("Jurado-Lui. 2024"); m_t4.setCharacterSize(70); m_t4.setPosition(180,900);
-    m_options.push_back(m_t2); m_options.push_back(m_t3);
+    handleStartMusic();
+    menuFont.loadFromFile(FONT_FILE);
+    text1.setFont(menuFont);  text1.setString("Bombita"); text1.setCharacterSize(150); text1.setPosition(180,80);
+    text2.setFont(menuFont);  text2.setString("Select level"); text2.setCharacterSize(70); text2.setPosition(180,350);
+    text3.setFont(menuFont);  text3.setString("Exit"); text3.setCharacterSize(70); text3.setPosition(1200,350);
+    text4.setFont(menuFont);  text4.setString("Jurado-Lui. 2024"); text4.setCharacterSize(70); text4.setPosition(180,900);
+    m_options.push_back(text2); m_options.push_back(text3);
+}
+
+void Menu::handleStartMusic() {
+    backgroundMusic.openFromFile(MENU_BACKGROUND_MUSIC_SRC);
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
 }
 
 void Menu::draw(RenderWindow &w) {
     w.clear({2,4,74});
-    w.draw(m_t1);
+    w.draw(text1);
     for (auto &text:m_options) {
         w.draw(text);
     }
-    w.draw(m_t4);
+    w.draw(text4);
 }
 
 void Menu::update(Game &j) {
     updateTextColor(m_options,j);
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-        if (m_t2.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+    if (Mouse::isButtonPressed(Mouse::Left)){
+        if (text2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {
+            backgroundMusic.stop();
             j.changeScene(new LevelSelector);
         }
 
-        if (m_t3.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y))) {
+        if (text3.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {
             j.getWindow().close();
         }
     }
 }
-
-
-
