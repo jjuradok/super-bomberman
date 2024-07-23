@@ -23,7 +23,7 @@ private:
 	char playerOrigin;
 	Vector2f mVel;
 	Clock bombClock;
-	float timeRemaining = 3000.0f;
+	float timeRemaining = BOMB_LIFE_TIME;
 	bool isPaused;
 };
 
