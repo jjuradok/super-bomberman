@@ -137,7 +137,6 @@ bool Match::withinBounds(int i, int j, int rows, int columns)
 
 void Match::handleEndMatch(Game &game, Player *winner)
 {
-	return;
 	handleMatchMusic(true);
 	game.changeScene(new Ganador(!winner->getIsPlayerOne(), this->getLevelId()));
 }
