@@ -17,6 +17,7 @@ public:
   unsigned int getScreenHeight() ;
   void setScreenWidth(unsigned int width);
   void setScreenHeight(unsigned int height);
+  void save();
 };
 
 #endif

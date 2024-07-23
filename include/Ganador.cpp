@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "LevelSelector.h"
 #include "Menu.h"
+#include "config/ResourcesLocation.h"
 
 std::string Ganador::get_lvl_played() {
 	return m_lvl_played;
@@ -10,7 +11,7 @@ std::string Ganador::get_lvl_played() {
 
 Ganador::Ganador(bool player_one,const std::string &lvl_played): m_lvl_played(lvl_played)
 {
-	m_font.loadFromFile("assets/fonts/fuentegod.ttf");
+	m_font.loadFromFile(FONT_FILE);
 
 
 	m_text.setFont(m_font);

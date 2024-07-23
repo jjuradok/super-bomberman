@@ -6,10 +6,12 @@
 #include "Game.h"
 #include <SFML/Window/Mouse.hpp>
 
+#include "Menu.h"
 #include "Pause.h"
+#include "config/ResourcesLocation.h"
 class Pause;
-SettingsMenu::SettingsMenu() {
-    font.loadFromFile("assets/fonts/fuentegod.ttf");
+SettingsMenu::SettingsMenu(){
+    font.loadFromFile(FONT_FILE);
     resolutions = {
         {1920, 1080},
         {1600, 900},
@@ -32,28 +34,28 @@ SettingsMenu::SettingsMenu() {
 }
 
 
-void SettingsMenu::initializeText(sf::Text &m_titres, const std::string &str, unsigned int size, const sf::Vector2f &position) {
-    m_titres.setFont(font);
-    m_titres.setString(str);
-    m_titres.setCharacterSize(size);
-    m_titres.setFillColor(sf::Color::White);
-    m_titres.setPosition(position);
-}
 
-void SettingsMenu::update(Game &j) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
-    updateTextColor(resolutionTexts,j);
-    for (sf::Text &resolutionText : resolutionTexts) {
-        if (resolutionText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+
+void SettingsMenu::update(Game &game) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(game.getWindow());
+
+    for (size_t i = 0; i < resolutionTexts.size(); ++i) {
+        if (resolutionTexts[i].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+            resolutionTexts[i].setFillColor(sf::Color(75, 75, 75));
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                selectedOption = i;
+                m_settings.setScreenWidth(resolutions[i].first);
+                m_settings.setScreenHeight(resolutions[i].second);
+                game.getWindow().setSize(sf::Vector2u(resolutions[i].first, resolutions[i].second));
+                game.getWindow().setView(sf::View(sf::FloatRect(0, 0, resolutions[i].first, resolutions[i].second)));
+                m_settings.save(); // Guardar configuración
+            }
         } else {
-            resolutionText.setFillColor(sf::Color::White); // Restaurar el color original
-        }
-
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && resolutionText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-            j.changeScene(new Pause);
+            resolutionTexts[i].setFillColor(sf::Color::White);
         }
     }
 }
+
 
 void SettingsMenu::draw(sf::RenderWindow &w) {
     w.clear();

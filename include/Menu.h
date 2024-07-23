@@ -19,7 +19,7 @@ class Menu : public Scene{
         void draw(RenderWindow &w) override;
     private:
         Font m_font;
-        Text m_t1,m_t2,m_t3, m_t4;
+        Text m_t1,m_t2,m_t3, m_t4,m_t5;
         std::vector<Text> m_options;
 };
 

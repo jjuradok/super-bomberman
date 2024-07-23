@@ -60,3 +60,14 @@ void Settings::setScreenHeight(unsigned int height)
 {
   screen_height = height;
 }
+void Settings::save() {
+  std::ofstream file(SETTINGS_FILE);
+  if (!file.is_open()) {
+    std::cout << "Filename: " << filename << std::endl;
+    std::cerr << "Failed to open configuration file for saving: " << filename << std::endl;
+    return;
+  }
+
+  file << screen_width << " " << screen_height << std::endl;
+  file.close();
+}

@@ -8,7 +8,10 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include "Scene.h"
+#include "Settings.h"
 
+
+class Settings;
 
 class SettingsMenu: public Scene {
 public:
@@ -21,9 +24,8 @@ private:
     std::vector<sf::Text> resolutionTexts;
     std::vector<std::pair<int, int>> resolutions;
     Clock c_cont;
-    void initializeResolutions();
-    void showResolutionOptions(Game &j);
-    void initializeText(sf::Text &text, const std::string &str, unsigned int size, const sf::Vector2f &position);
+    Settings m_settings;
+    int selectedOption;
 };
 
 

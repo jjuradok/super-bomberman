@@ -8,10 +8,12 @@
 #include "Match.h"
 #include<fstream>
 
+#include "LoadScreen.h"
 #include "Menu.h"
+#include "config/ResourcesLocation.h"
 
 LevelSelector::LevelSelector() {
-    m_font.loadFromFile("assets/fonts/fuentegod.ttf");
+    m_font.loadFromFile(FONT_FILE);
         std::ifstream file(LEVEL_NAMES_SRC);
         std::string line;
         while (std::getline(file, line)) {
@@ -55,7 +57,7 @@ void LevelSelector::update(Game &j) {
         }
         for (auto &text : levelTexts) {
             if (text.getGlobalBounds().contains(static_cast<float>(sf::Mouse::getPosition(j.getWindow()).x), static_cast<float>(sf::Mouse::getPosition(j.getWindow()).y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-                selectLevel(j,text.getString());
+                j.changeScene(new LoadScreen(text.getString()));
             }
         }
     }

@@ -2,7 +2,7 @@
 #define RESOURCES_LOCATION_H
 #include <string>
 using namespace std;
-
+const string FONT_FILE = "assets/fonts/pixel.ttf";
 const string SETTINGS_FILE = "resources/settings.txt";
 const string PLAYER_TEXTURE = "assets/textures/player.png";
 const string SECOND_PLAYER_TEXTURE = "assets/textures/player2.png";
