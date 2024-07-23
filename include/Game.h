@@ -7,12 +7,13 @@ using namespace sf;
 class Game {
 public:
 	Game(Scene *e);
-	void start();
 	void changeScene(Scene *nueva_escena);
-	~Game();
+	void setPreviousScene(Scene *escena);
+	void start();
+	Scene *getPreviousScene();
 	RenderWindow &getWindow();
-	void setPreviousScene(Scene* escena);
-	Scene* getPreviousScene();
+	~Game();
+
 private:
 	RenderWindow m_win;
 	Scene *m_esc,*m_prox, *m_prev;
