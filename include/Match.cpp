@@ -172,12 +172,13 @@ string Match::getLevelId()
 }
 
 Match::Match(const string &levelId)
-		: player_1(true, Vector2f(-100, -100)),
-			player_2(false, Vector2f(-100, -100)),
+		: player_1(true, Vector2f(-100, -100), matchTime),
+			player_2(false, Vector2f(-100, -100), matchTime),
 			lvl_loaded(levelId),
 			level(levelId),
 			isPaused(false)
 {
+	matchTime.restart();
 	loadMatrix("resources/levels/" + levelId + ".txt");
 	level.loadMatrix(matrix);
 	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
