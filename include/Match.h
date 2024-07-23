@@ -15,27 +15,29 @@ using namespace std;
 
 class Match : public Scene
 {
+	string lvl_loaded;
 	vector<vector<char>> matrix;
+	vector<Bomb *> bombs;
+	vector<Explosion *> explosions;
 	Player player_1;
 	Player player_2;
 	Level level;
-	vector<Bomb*> bombs;
-	vector<Explosion*> explosions;
+	Clock matchTime;
+	bool isPaused;
+
+	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
 	void loadMatrix(string fileName);
 	void removeBomb(Bomb *bomb);
 	void handleEndMatch(Game &game, Player *winner);
-	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
-	string lvl_loaded;
-	bool isPaused;
 
 public:
 	Match(const string &levelId);
 	string getLevelId();
+	bool isMatchPaused();
 	void handleMatchMusic(bool stop = false);
 	void update(Game &j) override;
 	void draw(RenderWindow &w) override;
 	void setPaused(bool paused);
-	bool isMatchPaused();
 };
 
 #endif
