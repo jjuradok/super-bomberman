@@ -4,7 +4,7 @@
 #include "../Match/Match.h"
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include "../LevelSelector/LevelSelector.h"
 #include "../utils/Details.h"
 

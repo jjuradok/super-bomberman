@@ -1,7 +1,6 @@
 #include "Bomb.h"
 #include "../config/Constants.h"
-#include "../config/Config.h"
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include <iostream>
 
 class Animated;

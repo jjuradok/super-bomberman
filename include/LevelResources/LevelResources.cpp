@@ -4,8 +4,8 @@
 #include <sstream>
 
 #include "LevelResources.h"
-#include "../config/ResourcesLocation.h"
-#include "../config/Config.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
+#include "../config/Constants.h"
 
 using namespace std;
 

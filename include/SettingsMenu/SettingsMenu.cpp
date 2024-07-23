@@ -5,7 +5,7 @@
 #include "SettingsMenu.h"
 #include "../Game/Game.h"
 #include <SFML/Window/Mouse.hpp>
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 
 #include "../Pause/Pause.h"
 #include "../utils/Details.h"

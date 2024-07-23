@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "../config/Config.h"
+#include "../config/Constants.h"
 using namespace sf;
 using namespace std;
 

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Box.h"
-#include "../config/ResourcesLocation.h"
-#include "../config/Config.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
+#include "../config/Constants.h"
 #include "../ScreenPosition/ScreenPosition.h"
 #include "../LevelResources/LevelResources.h"
 

@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../utils/MatrixPosition.h"
-#include "../config/Config.h"
+#include "../config/Constants.h"
 
 using namespace sf;
 

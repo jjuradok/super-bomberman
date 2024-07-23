@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include "LevelSelector.h"
 #include "../Game/Game.h"
 #include "../Match/Match.h"

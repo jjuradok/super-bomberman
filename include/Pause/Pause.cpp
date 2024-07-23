@@ -4,7 +4,7 @@
 #include "../LevelSelector/LevelSelector.h"
 #include "Pause.h"
 #include "../SettingsMenu/SettingsMenu.h"
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include "../utils/Details.h"
 
 Pause::Pause()

@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include "../utils/LevelConfig.h"
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 
 using namespace std;
 using namespace sf;

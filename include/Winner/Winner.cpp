@@ -2,7 +2,7 @@
 #include "../Match/Match.h"
 #include "../Game/Game.h"
 #include "../LevelSelector/LevelSelector.h"
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include "../Menu/Menu.h"
 #include "../utils/Details.h"
 

@@ -7,7 +7,6 @@
 #include "SFML/Audio/SoundSource.hpp"
 
 #include "../Box/Box.h"
-#include "../config/Config.h"
 #include "../config/Constants.h"
 #include "../utils/Vector.h"
 #include "../utils/Vector.h"

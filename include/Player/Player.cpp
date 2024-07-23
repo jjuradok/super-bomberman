@@ -2,8 +2,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <iostream>
-#include "../config/Config.h"
-#include "../config/ResourcesLocation.h"
+#include "../config/ResourcesLocation/ResourcesLocation.h"
 #include "../config/Constants.h"
 #include "../utils/Boundings.h"
 
