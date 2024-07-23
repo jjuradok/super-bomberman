@@ -13,7 +13,7 @@ const float PLAYER_TEXTURE_WIDTH = 15.0f;
 const float PLAYER_TEXTURE_HEIGHT = 24.0f;
 const float BOMB_LIFE_TIME = 2000.0f;
 const float BOMB_COOLDOWN = 2000.0f;
-const float EXPLOSION_LIFE_TIME = 3000.0f;
+const float EXPLOSION_LIFE_TIME = 2500.0f;
 const float ANIMATION_FRAME_DURATION = 200.0f;
 
 #endif 
