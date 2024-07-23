@@ -1,90 +1,99 @@
-#include "Pause.h"
-
-#include "LevelSelector.h"
-
-#include "Pause.h"
 #include <iostream>
 
+#include "Pause.h"
+#include "LevelSelector.h"
+#include "Pause.h"
 #include "SettingsMenu.h"
 #include "config/ResourcesLocation.h"
 
-
-Pause::Pause() {
-    if (!m_font.loadFromFile(FONT_FILE)) {
-        std::cerr << "Error loading font\n";
-        // Manejar error si es necesario
+Pause::Pause()
+{
+    if (!font.loadFromFile(FONT_FILE))
+    {
+        cerr << "Error loading font\n";
     }
 
-    m_resume.setFont(m_font);
-    m_resume.setString("Resume");
-    m_resume.setCharacterSize(30);
-    m_resume.setFillColor(sf::Color::White);
-    m_resume.setPosition(100, 100);
+    resumeText.setFont(font);
+    resumeText.setString("Resume");
+    resumeText.setCharacterSize(30);
+    resumeText.setFillColor(Color::White);
+    resumeText.setPosition(100, 100);
 
-    m_levelSelect.setFont(m_font);
-    m_levelSelect.setString("Select level");
-    m_levelSelect.setCharacterSize(30);
-    m_levelSelect.setFillColor(sf::Color::White);
-    m_levelSelect.setPosition(100, 150);
+    levelSelectText.setFont(font);
+    levelSelectText.setString("Select level");
+    levelSelectText.setCharacterSize(30);
+    levelSelectText.setFillColor(Color::White);
+    levelSelectText.setPosition(100, 150);
 
-    m_exit.setFont(m_font);
-    m_exit.setString("Exit");
-    m_exit.setCharacterSize(30);
-    m_exit.setFillColor(sf::Color::White);
-    m_exit.setPosition(100, 200);
+    exitText.setFont(font);
+    exitText.setString("Exit");
+    exitText.setCharacterSize(30);
+    exitText.setFillColor(Color::White);
+    exitText.setPosition(100, 200);
 
-    m_settings.setFont(m_font);
-    m_settings.setString("Settings");
-    m_settings.setCharacterSize(30);
-    m_settings.setFillColor(sf::Color::White);
-    m_settings.setPosition(100, 250);
+    settingsText.setFont(font);
+    settingsText.setString("Settings");
+    settingsText.setCharacterSize(30);
+    settingsText.setFillColor(Color::White);
+    settingsText.setPosition(100, 250);
 
-
-    m_options.push_back(m_resume);
-    m_options.push_back(m_levelSelect);
-    m_options.push_back(m_exit);
-    m_options.push_back(m_settings);
+    options.push_back(resumeText);
+    options.push_back(levelSelectText);
+    options.push_back(exitText);
+    options.push_back(settingsText);
 }
-void Pause::updateTextColor(sf::Text& text, Game& j) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
-    if (text.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-        text.setFillColor(sf::Color(75,75,75)); // Cambiar el color al pasar el mouse
-    } else {
-        text.setFillColor(sf::Color::White); // Restaurar el color original
+void Pause::updateTextColor(Text &text, Game &j)
+{
+    Vector2i mousePos = Mouse::getPosition(j.getWindow());
+    if (text.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+    {
+        text.setFillColor(Color(75, 75, 75)); // Cambiar el color al pasar el mouse
+    }
+    else
+    {
+        text.setFillColor(Color::White); // Restaurar el color original
     }
 }
-void Pause::update(Game& j) {
+void Pause::update(Game &j)
+{
 
-    for(auto & text: m_options) {
-        updateTextColor(text,j);
+    for (auto &text : options)
+    {
+        updateTextColor(text, j);
     }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        sf::Vector2i mousePos = sf::Mouse::getPosition(j.getWindow());
+    if (Mouse::isButtonPressed(Mouse::Left))
+    {
+        Vector2i mousePos = Mouse::getPosition(j.getWindow());
 
-        if (m_resume.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-            std::cout << "Resuming game" << std::endl;
-            // Reanudar el juego
+        if (resumeText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && counter.getElapsedTime().asMilliseconds() >= 250)
+        {
             j.changeScene(j.getPreviousScene());
-        } else if (m_levelSelect.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-            std::cout << "Selecting level" << std::endl;
+        }
+        else if (levelSelectText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && counter.getElapsedTime().asMilliseconds() >= 250)
+        {
             j.changeScene(new LevelSelector());
-        } else if (m_exit.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-            std::cout << "Exiting game" << std::endl;
-            // Salir del juego
+        }
+        else if (exitText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && counter.getElapsedTime().asMilliseconds() >= 250)
+        {
             j.getWindow().close();
-        } else if (m_settings.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && c_cont.getElapsedTime().asMilliseconds() >= 250) {
-            std::cout << "Exiting game" << std::endl;
-        // Salir del juego
+        }
+        else if (settingsText.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && counter.getElapsedTime().asMilliseconds() >= 250)
+        {
             j.changeScene(new SettingsMenu);
+        }
     }
+
+    if (Keyboard::isKeyPressed(Keyboard::Escape) && counter.getElapsedTime().asMilliseconds() >= 250)
+    {
+        j.changeScene(j.getPreviousScene());
     }
 }
 
-void Pause::draw(sf::RenderWindow& w) {
+void Pause::draw(RenderWindow &w)
+{
     w.clear();
-    for (auto& text : m_options) {
+    for (auto &text : options)
+    {
         w.draw(text);
     }
 }
-
-
