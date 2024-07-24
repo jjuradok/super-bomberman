@@ -16,6 +16,11 @@
 using namespace std;
 using namespace sf;
 
+Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name)
+{
+  levelResources.getBackgroundMusic()->play();
+};
+
 vector<vector<char>> Level::getMatrix() const
 {
   return matrix;
@@ -36,64 +41,64 @@ void Level::loadMatrix(vector<vector<char>> matrix) {
   update(matrix);
 }
 
-Level::Level(const string &lvl_name) : levelResources(lvl_name), lvl_loaded(lvl_name){
-  levelResources.getBackgroundMusic()->play();
-};
-
 Box *Level::handleCreateBox(MatrixPosition position, string levelId)
 {
   int i = position.i;
   int j = position.j;
+  int boxSize = TILE_SIZE * SCALE_FACTOR;
+
   bool isDestructible = matrix[i][j] == DESTRUCTIBLE_TILE;
   bool isBorder = includes(BORDER_TILES, matrix[i][j]);
 
-  int boxSize = TILE_SIZE * SCALE_FACTOR;
   Vector2f boxPosition(j * boxSize, i * boxSize);
   Vector2f positionCentered = getPositionCenteredIntoLevel(boxPosition, this->getDimensions(), Vector2f(boxSize, boxSize));
   Vector2f pos = Vector2f(positionCentered.x + boxSize / 2, positionCentered.y + boxSize / 2);
+
+  // Por defecto, creamos una caja "interior", si está en el borde aplicamos una logica particular
   Box *box = new Box(isDestructible, pos, &levelResources);
 
   if (isBorder)
   {
+    // Se detecta si es una esquina en base a la posición en la matriz o bien porque el tile lo explicita
     bool isCorner = (i == 0 && j == 0) || (i == 0 && j == columns - 1) || (i == rows - 1 && j == 0) || (i == rows - 1 && j == columns - 1) || includes(CORNER_TILES, matrix[i][j]);
 
     bool isRightBorder = j == columns - 1;
     bool isTopBorder = i == 0;
     bool isBottomBorder = i == rows - 1;
 
-    bool isTopLeftCorner = matrix[i][j] == CORNER_TOP_LEFT;
-    bool isTopRightCorner = matrix[i][j] == CORNER_TOP_RIGHT;
-    bool isBottomLeftCorner = matrix[i][j] == CORNER_BOTTOM_LEFT;
-    bool isBottomRightCorner = matrix[i][j] == CORNER_BOTTOM_RIGHT;
-    bool isBorderTop = matrix[i][j] == BORDER_TOP;
-    bool isBorderBottom = matrix[i][j] == BORDER_BOTTOM;
-    bool isBorderRight = matrix[i][j] == BORDER_RIGHT;
-
     Texture boxTexture = isCorner ? levelResources.getCornerBoxTexture() : levelResources.getBorderBoxTexture();
     delete box;
+
+    // Creamos la caja con textura de borde/esquina y la rotamos si es necesario
     box = new Box(boxTexture, pos);
-    if ((isRightBorder && !isCorner) || isBorderRight)
+    // Borde derecho
+    if ((isRightBorder && !isCorner) || matrix[i][j] == BORDER_RIGHT)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
     }
-    if ((isTopBorder && !isCorner) || isBorderTop)
+    // Borde de arriba
+    if ((isTopBorder && !isCorner) || matrix[i][j] == BORDER_TOP)
     {
       box->setRotation(90);
     }
-    if ((isBottomBorder && !isCorner) || isBorderBottom)
+    // Borde de abajo
+    if ((isBottomBorder && !isCorner) || matrix[i][j] == BORDER_BOTTOM)
     {
       box->setRotation(-90);
     }
-    if ((isCorner && isRightBorder && isTopBorder) || isTopRightCorner)
+    // Esquina S.D
+    if ((isCorner && isRightBorder && isTopBorder) || matrix[i][j] == CORNER_TOP_RIGHT)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
       box->setRotation(-90);
     }
-    if ((isCorner && isRightBorder && isBottomBorder) || isBottomRightCorner)
+    // Esqiona I.D
+    if ((isCorner && isRightBorder && isBottomBorder) || matrix[i][j] == CORNER_BOTTOM_RIGHT)
     {
       box->setScale(Vector2f(-SCALE_FACTOR, SCALE_FACTOR));
     }
-    if ((isCorner && !isRightBorder && isTopBorder) || isTopLeftCorner)
+    // Esquina I.I
+    if ((isCorner && !isRightBorder && isTopBorder) || matrix[i][j] == CORNER_TOP_LEFT)
     {
       box->setRotation(90);
     }
@@ -102,7 +107,6 @@ Box *Level::handleCreateBox(MatrixPosition position, string levelId)
   return box;
 }
 
-
 void Level::update(vector<vector<char>> newMatrix)
 {
   boxes.clear();
@@ -110,6 +114,7 @@ void Level::update(vector<vector<char>> newMatrix)
   rows = matrix.size();
   columns = matrix[0].size();
 
+  // Recorro la matriz para crear las cajas
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)
@@ -136,6 +141,8 @@ void Level::draw(RenderWindow &w)
     {
       Vector2f position = getPositionCenteredIntoLevel(Vector2f(j * TILE_SIZE * SCALE_FACTOR, i * TILE_SIZE * SCALE_FACTOR), this->getDimensions(), Vector2f(TILE_SIZE * SCALE_FACTOR, TILE_SIZE * SCALE_FACTOR));
       levelResources.getGroundSprite().setPosition(position);
+      
+      // Dibujo el suelo centrado en pantalla
       w.draw(levelResources.getGroundSprite());
     }
   }
