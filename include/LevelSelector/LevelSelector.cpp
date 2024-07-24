@@ -59,10 +59,6 @@ LevelSelector::LevelSelector() {
 }
 
 void LevelSelector::update(Game &j) {
-    vector<Text> levelTexts;
-    for (auto &config : levelsConfig) {
-        levelTexts.push_back(config.levelText);
-    }
     Details::updateTextColor(levelsConfig, j);
     Details::updateTextColor(m_t2,j);
     if (Mouse::isButtonPressed(Mouse::Left)) {

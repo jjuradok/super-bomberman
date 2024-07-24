@@ -24,11 +24,13 @@ class Match : public Scene
 	Level level;
 	Clock matchTime;
 	bool isPaused;
-
+	
 	vector<vector<char>> updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game);
 	void loadMatrix(string fileName);
-	void removeBomb(Bomb *bomb);
 	void handleEndMatch(Game &game, Player *winner);
+	void updateExplosions();
+	void updateBombs(Game &game);
+
 public:
 	Match(const string &levelId);
 	string getLevelId();
