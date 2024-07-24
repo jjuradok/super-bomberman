@@ -207,7 +207,6 @@ void Match::update(Game &j)
 	{
 		for (Explosion *explosion : explosions)
 		{
-			// explosion->updateAnimation();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
 				handleEndMatch(j, player);
@@ -215,7 +214,6 @@ void Match::update(Game &j)
 		}
 	}
 
-	// Actualizo bombas y explosiones, eliminando las que corresponde
 	updateBombs(j);
 	updateExplosions();
 
@@ -279,19 +277,15 @@ void Match::updateBombs(Game &game)
 
 void Match::draw(RenderWindow &w)
 {
-	// Dibujo el color de fondo
 	w.clear(Color(level.getLevelResources()->getBackgroundColor()));
 	level.draw(w);
 
-	// Dibujo los personajes
 	player_1.draw(w);
 	player_2.draw(w);
 
-	// Dibujo las bombas
 	for (Bomb *d : bombs)
 		d->draw(w);
 
-	// Dibujo las explosiones
 	for (Explosion *d : explosions)
 		d->draw(w);
 }

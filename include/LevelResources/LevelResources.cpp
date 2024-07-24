@@ -16,20 +16,20 @@ string getAssetPath(string levelId, string assetName)
 
 LevelResources::LevelResources(string levelId) : levelId(levelId)
 {
-  string destructibleBoxPath = getAssetPath(levelId,DESTRUCTIBLE_BOX_LEVEL_TEXTURE);
-  string indestructibleBoxPath = getAssetPath(levelId,INDESTRUCTIBLE_BOX_LEVEL_TEXTURE);
-  string borderBoxPath = getAssetPath(levelId,BORDER_BOX_LEVEL_TEXTURE);
-  string cornerBoxPath = getAssetPath(levelId,CORNER_BOX_LEVEL_TEXTURE);
-  string bottomBorderBoxPath = getAssetPath(levelId,BOTTOM_BORDER_BOX_LEVEL_TEXTURE);
-  string groundPath = getAssetPath(levelId,GROUND_LEVEL_TEXTURE);
-  
+  string destructibleBoxPath = getAssetPath(levelId, DESTRUCTIBLE_BOX_LEVEL_TEXTURE);
+  string indestructibleBoxPath = getAssetPath(levelId, INDESTRUCTIBLE_BOX_LEVEL_TEXTURE);
+  string borderBoxPath = getAssetPath(levelId, BORDER_BOX_LEVEL_TEXTURE);
+  string cornerBoxPath = getAssetPath(levelId, CORNER_BOX_LEVEL_TEXTURE);
+  string bottomBorderBoxPath = getAssetPath(levelId, BOTTOM_BORDER_BOX_LEVEL_TEXTURE);
+  string groundPath = getAssetPath(levelId, GROUND_LEVEL_TEXTURE);
+
   groundTexture.loadFromFile(groundPath);
   destructibleBoxTexture.loadFromFile(destructibleBoxPath);
   indestructibleBoxTexture.loadFromFile(indestructibleBoxPath);
   borderBoxTexture.loadFromFile(borderBoxPath);
   cornerBoxTexture.loadFromFile(cornerBoxPath);
   backgroundMusic.setLoop(true);
-  backgroundMusic.openFromFile(getAssetPath(levelId,LEVEL_BACKGROUND_MUSIC));
+  backgroundMusic.openFromFile(getAssetPath(levelId, LEVEL_BACKGROUND_MUSIC));
 
   groundSprite.setTexture(groundTexture);
   groundSprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
@@ -39,36 +39,29 @@ LevelResources::LevelResources(string levelId) : levelId(levelId)
   string line;
   while (getline(file, line))
   {
-    if (!line.empty())
+
+    vector<string> parts;
+    istringstream words(line);
+    string word;
+
+    while (getline(words, word, ','))
     {
-      vector<string> parts;
-      istringstream words(line);
-      string word;
+      parts.push_back(word);
+    }
 
-      while (getline(words, word, ','))
-      {
+    if (parts.size() >= 4)
+    {
+      int r = stoi(parts[0]);
+      int g = stoi(parts[1]);
+      int b = stoi(parts[2]);
+      int a = stoi(parts[3]);
 
-        parts.push_back(word);
-      }
-
-      if (parts.size() >= 4)
-      {
-        int r = stoi(parts[0]);
-        int g = stoi(parts[1]);
-        int b = stoi(parts[2]);
-        int a = stoi(parts[3]);
-
-        backgroundColor = Color(r, g, b, a);
-      }
-      else
-      {
-        cerr << "Error: La línea no contiene suficientes valores RGBA." << endl;
-      }
+      backgroundColor = Color(r, g, b, a);
     }
   }
 
-    file.close();
-  };
+  file.close();
+};
 
 Texture &LevelResources::getGroundTexture()
 {

@@ -66,7 +66,7 @@ void Player::update(Level &level)
 	vector<FloatRect> boxesBoundings = getBoundingsFromEntities(level.getLevelBoxes());
 	bool isMoving = false;
 
-	auto handleMovement = [&](Keyboard::Key key, float dx, float dy, const std::string &folder, int defaultFrame)
+	auto handleMovement = [&](Keyboard::Key key, float dx, float dy, const string &folder, int defaultFrame)
 	{
 		if (Keyboard::isKeyPressed(key))
 		{

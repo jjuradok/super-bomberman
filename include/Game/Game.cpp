@@ -69,7 +69,6 @@ void Game::start()
 
 		if (m_prox)
 		{
-
 			if (m_esc != m_prev)
 			{
 				delete m_esc;
