@@ -25,7 +25,6 @@ public:
   Texture& getBackgroundTexture();
   Sprite& getGroundSprite();
   Music* getBackgroundMusic();
-  ~LevelResources();
 };
 
 #endif

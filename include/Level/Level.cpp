@@ -130,8 +130,6 @@ void Level::update(vector<vector<char>> newMatrix)
 void Level::draw(RenderWindow &w)
 {
   float scale = max(w.getSize().x / levelResources.getBackgroundTexture().getSize().x, w.getSize().y / levelResources.getBackgroundTexture().getSize().y);
-  // levelResources.getBackgroundSprite().setScale(5, 5);
-  // w.draw(levelResources.getBackgroundSprite());
   for (int i = 0; i < rows; i++)
   {
     for (int j = 0; j < columns; j++)

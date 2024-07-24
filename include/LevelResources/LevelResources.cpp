@@ -114,7 +114,3 @@ Music *LevelResources::getBackgroundMusic()
 {
   return &backgroundMusic;
 }
-
-LevelResources::~LevelResources() {
-  backgroundMusic.stop();
-}

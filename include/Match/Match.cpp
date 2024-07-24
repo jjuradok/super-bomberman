@@ -17,6 +17,32 @@
 
 using namespace std;
 
+Match::Match(const string &levelId)
+		: player_1(true, Vector2f(-100, -100), matchTime),
+			player_2(false, Vector2f(-100, -100), matchTime),
+			lvl_loaded(levelId),
+			level(levelId),
+			isPaused(false)
+{
+	matchTime.restart();
+	// Cargo la matriz del nivel
+	loadMatrix(levelMatrixFile(levelId));
+	level.loadMatrix(matrix);
+
+	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
+	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
+	float size = TILE_SIZE * SCALE_FACTOR;
+
+	Vector2f player1PositionPixels = getPositionCenteredIntoLevel(Vector2f(player1Position.j * size + 4, player1Position.i * size), level.getDimensions(), player_1.getDimensions());
+	Vector2f player2PositionPixels = getPositionCenteredIntoLevel(Vector2f(player2Position.j * size + 4, player2Position.i * size), level.getDimensions(), player_2.getDimensions());
+
+	// Reposiciono a los jugadores según lo que dice en la matriz
+	if (player1Position != INVALID_MATRIX_POSITION)
+		player_1.changePosition(player1PositionPixels);
+	if (player2Position != INVALID_MATRIX_POSITION)
+		player_2.changePosition(player2PositionPixels);
+}
+
 vector<vector<char>> Match::updateMatrixAfterExplosion(MatrixPosition bombPosition, Game &game)
 {
 	vector<vector<char>> updatedMatrix = matrix;
@@ -134,38 +160,15 @@ bool Match::withinBounds(int i, int j, int rows, int columns)
 	return i >= 0 && i < rows && j >= 0 && j < columns;
 }
 
-void Match::handleEndMatch(Game &game, Player *winner)
-{
-	handleMatchMusic(true);
-	game.changeScene(new Winner(!winner->getIsPlayerOne(), this->getLevelId()));
-}
-
 string Match::getLevelId()
 {
 	return lvl_loaded;
 }
 
-Match::Match(const string &levelId)
-		: player_1(true, Vector2f(-100, -100), matchTime),
-			player_2(false, Vector2f(-100, -100), matchTime),
-			lvl_loaded(levelId),
-			level(levelId),
-			isPaused(false)
+void Match::handleEndMatch(Game &game, Player *winner)
 {
-	matchTime.restart();
-	loadMatrix("resources/levels/" + levelId + ".txt");
-	level.loadMatrix(matrix);
-	MatrixPosition player1Position = level.findPosition(PLAYER_ONE_ID);
-	MatrixPosition player2Position = level.findPosition(PLAYER_TWO_ID);
-	float size = TILE_SIZE * SCALE_FACTOR;
-
-	Vector2f player1PositionPixels = getPositionCenteredIntoLevel(Vector2f(player1Position.j * size + 4, player1Position.i * size), level.getDimensions(), player_1.getDimensions());
-	Vector2f player2PositionPixels = getPositionCenteredIntoLevel(Vector2f(player2Position.j * size + 4, player2Position.i * size), level.getDimensions(), player_2.getDimensions());
-
-	if (player1Position != INVALID_MATRIX_POSITION)
-		player_1.changePosition(player1PositionPixels);
-	if (player2Position != INVALID_MATRIX_POSITION)
-		player_2.changePosition(player2PositionPixels);
+	handleMatchMusic(true);
+	game.changeScene(new Winner(!winner->getIsPlayerOne(), this->getLevelId()));
 }
 
 void Match::handleMatchMusic(bool stop)
@@ -199,11 +202,12 @@ void Match::update(Game &j)
 	float size = TILE_SIZE * SCALE_FACTOR;
 	vector<Player *> players = {&player_1, &player_2};
 
+	// Valido si algún jugador está colisionando con una explosión
 	for (Player *player : players)
 	{
 		for (Explosion *explosion : explosions)
 		{
-			explosion->updateAnimation();
+			// explosion->updateAnimation();
 			if (explosion->getGlobalBounds().intersects(player->getCollisionBounds()))
 			{
 				handleEndMatch(j, player);
@@ -211,26 +215,18 @@ void Match::update(Game &j)
 		}
 	}
 
-	for (Bomb *bomb : bombs)
-	{
-		bomb->updateAnimation();
-		if (bomb->shouldExplode())
-		{
-			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition(bomb->getPosition(), level.getDimensions());
-			vector<vector<char>> updatedMatrix = updateMatrixAfterExplosion(bombPositionInMatrix, j);
-			matrix = updatedMatrix;
-			level.update(updatedMatrix);
+	// Actualizo bombas y explosiones, eliminando las que corresponde
+	updateBombs(j);
+	updateExplosions();
 
-			removeBomb(bomb);
-		}
-	}
-
-	vector<Player *> playersToShoot;
+	vector<Player *>
+			playersToShoot;
 	if (player_1.canShoot())
 		playersToShoot.push_back(&player_1);
 	if (player_2.canShoot())
 		playersToShoot.push_back(&player_2);
 
+	// Agrego las bombas que los jugadores dispararon
 	for (Player *player : playersToShoot)
 	{
 		Bomb *shotBomb = player->shoot();
@@ -242,23 +238,11 @@ void Match::update(Game &j)
 	}
 }
 
-void Match::removeBomb(Bomb *bomb)
+void Match::updateExplosions()
 {
-	delete bomb;
-	bombs.erase(remove(bombs.begin(), bombs.end(), bomb), bombs.end());
-}
-
-void Match::draw(RenderWindow &w)
-{
-	w.clear(Color(level.getLevelResources()->getBackgroundColor()));
-	level.draw(w);
-	player_1.draw(w);
-	player_2.draw(w);
-	for (Bomb *d : bombs)
-		d->draw(w);
 	for (auto explosion = explosions.begin(); explosion != explosions.end();)
 	{
-		(*explosion)->draw(w);
+		(*explosion)->updateAnimation();
 		if ((*explosion)->shouldRemove())
 		{
 			delete *explosion;
@@ -269,6 +253,47 @@ void Match::draw(RenderWindow &w)
 			++explosion;
 		}
 	}
+}
+
+void Match::updateBombs(Game &game)
+{
+	for (auto bomb = bombs.begin(); bomb != bombs.end();)
+	{
+		(*bomb)->updateAnimation();
+		if ((*bomb)->shouldExplode())
+		{
+			MatrixPosition bombPositionInMatrix = parsePixelsIntoMatrixPosition((*bomb)->getPosition(), level.getDimensions());
+			vector<vector<char>> updatedMatrix = updateMatrixAfterExplosion(bombPositionInMatrix, game);
+			matrix = updatedMatrix;
+			level.update(updatedMatrix);
+
+			delete *bomb;
+			bomb = bombs.erase(bomb);
+		}
+		else
+		{
+			++bomb;
+		}
+	}
+}
+
+void Match::draw(RenderWindow &w)
+{
+	// Dibujo el color de fondo
+	w.clear(Color(level.getLevelResources()->getBackgroundColor()));
+	level.draw(w);
+
+	// Dibujo los personajes
+	player_1.draw(w);
+	player_2.draw(w);
+
+	// Dibujo las bombas
+	for (Bomb *d : bombs)
+		d->draw(w);
+
+	// Dibujo las explosiones
+	for (Explosion *d : explosions)
+		d->draw(w);
 }
 
 void Match::loadMatrix(string fileName)
@@ -295,10 +320,12 @@ void Match::loadMatrix(string fileName)
 	}
 	file.close();
 }
+
 bool Match::isMatchPaused()
 {
 	return isPaused;
 }
+
 void Match::setPaused(bool paused)
 {
 	isPaused = paused;
