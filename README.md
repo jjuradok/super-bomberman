@@ -1,6 +1,10 @@
-# SFML C++ MacOS Example
+# Proyecto final de la materia programación II en Ingeniería en Inteligencia Artificial
 
-A very simple example of how to use SFML in VSCode on MacOS
+Realizado usando la librereia SFML para c++
+
+
+La configuración de SFML está pensada para Macos pero se puede adaptar a otro sistema operativo reemplazando el archivo Makefile por el correspondiente.
+Paso a paso para correrlo en Macos:
 
 # Prerequisites
 
