@@ -33,7 +33,7 @@ bool Bomb::shouldExplode() {
 void Bomb::setPaused(bool paused) {
 	if (paused) {
 		if (!isPaused) {
-			timeRemaining -= bombClock.getElapsedTime().asMilliseconds();
+			timeRemaining -= bombClock.getElapsedTime().asMilliseconds(); //cambio el tiempo restante a explotar en la pausa
 			isPaused = true;
 		}
 	} else {

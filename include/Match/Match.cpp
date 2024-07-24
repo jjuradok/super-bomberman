@@ -192,7 +192,7 @@ void Match::handleMatchMusic(bool stop)
 void Match::update(Game &j)
 {
 	handleMatchMusic();
-	if (isPaused)
+	if (isPaused) //cuando esta en pausa, no updateamos nada
 		return;
 	player_1.update(level);
 	player_2.update(level);
