@@ -9,7 +9,7 @@
 
 Pause::Pause()
 {
-	font.loadFromFile(FONT_FILE))
+    font.loadFromFile(FONT_FILE);
     resumeText.setFont(font);
     resumeText.setString("Resume");
     resumeText.setCharacterSize(30);
