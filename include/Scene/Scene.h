@@ -8,11 +8,11 @@ class Game;
 
 class Scene {
 protected:
-	Clock counter;
+	Clock counter; // las clases que hereden de scene, tienen un reloj para evitar clicks seguidos
 public:
 	virtual void update(Game &j) = 0;
 	virtual void draw(RenderWindow &) = 0;
-	virtual ~Scene()=default;
+	virtual ~Scene()=default; //destructor virtual por default
 };
 
 #endif

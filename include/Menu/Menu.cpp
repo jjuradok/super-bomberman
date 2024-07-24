@@ -41,7 +41,7 @@ void Menu::update(Game &j) {
     if (Mouse::isButtonPressed(Mouse::Left)){
         if (text2.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {
             backgroundMusic.stop();
-            j.changeScene(new LevelSelector);
+            j.changeScene(new LevelSelector); // menu para elegir el nivel
         }
 
         if (text3.getGlobalBounds().contains(static_cast<float>(Mouse::getPosition(j.getWindow()).x), static_cast<float>(Mouse::getPosition(j.getWindow()).y))) {

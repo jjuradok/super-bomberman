@@ -14,7 +14,7 @@ public:
 	void draw(RenderWindow &w) override;
 	std::string getLevelPlayed();
 private:
-	std::string m_lvl_played;
+	std::string m_lvl_played; //necesito esto para llamar al replay
 	Font m_font;
 	Text m_text,m_replay,m_mm;
 	std::vector<Text> m_options;

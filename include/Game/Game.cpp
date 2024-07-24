@@ -41,6 +41,7 @@ void Game::start()
 			}
 			if (e.type == Event::KeyPressed && e.key.code == Keyboard::Escape)
 			{
+				//dynamic_cast: "booleanizo" la escena actual para saber si es un Match
 				auto matchScene = dynamic_cast<Match *>(m_esc);
 				if (matchScene)
 				{
@@ -53,7 +54,7 @@ void Game::start()
 					else
 					{
 						changeScene(m_prev);
-						m_prev = nullptr;
+						m_prev = nullptr; //dejo la escena previa nula
 					}
 				}
 			}
@@ -77,7 +78,7 @@ void Game::start()
 			m_prox = nullptr;
 
 			auto matchScene = dynamic_cast<Match *>(m_esc);
-			if (matchScene)
+			if (matchScene) //si la escena actual es un Match, dejo la pausa en false
 			{
 				matchScene->setPaused(false);
 			}

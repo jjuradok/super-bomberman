@@ -9,11 +9,7 @@
 
 Pause::Pause()
 {
-    if (!font.loadFromFile(FONT_FILE))
-    {
-        cerr << "Error loading font\n";
-    }
-
+    font.loadFromFile(FONT_FILE);
     resumeText.setFont(font);
     resumeText.setString("Resume");
     resumeText.setCharacterSize(30);
